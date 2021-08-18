@@ -22,12 +22,12 @@ services:
     ports:
       - '8090:80'
     volumes:
-      - './data/wiki/:/data'
+      - './data/kiwix/:/data'
     #command: 'wikipedia wikisource wikivoyage wiktionary wikiversity wikibooks'
     restart: unless-stopped
 
-nextcloud:
-    image: nextcloud:21.04
+  nextcloud:
+    image: nextcloud:21
     ports:
       - '8070:80'
     volumes:
