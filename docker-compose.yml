@@ -23,6 +23,17 @@ services:
       - '8090:80'
     volumes:
       - './data/wiki/:/data'
-    command: 'wikipedia wikisource wikivoyage wiktionary wikiversity wikibooks'
+    #command: 'wikipedia wikisource wikivoyage wiktionary wikiversity wikibooks'
+    restart: unless-stopped
+
+nextcloud:
+    image: nextcloud:21.04
+    ports:
+      - '8070:80'
+    volumes:
+      - './data/next/app/config:/var/www/html/config'
+      - './data/next/app/custom_apps:/var/www/html/custom_apps'
+      - './data/next/app/data:/var/www/html/data'
+      - './data/next/app/themes:/var/www/html/themes'
     restart: unless-stopped
 
