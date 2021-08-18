@@ -16,3 +16,13 @@ services:
     volumes:
       - './data/kolibri:/root/.kolibri'
     restart: unless-stopped
+
+  kiwix:
+    image: kiwix/kiwix-serve
+    ports:
+      - '8090:80'
+    volumes:
+      - './data/wiki/:/data'
+    command: 'wikipedia wikisource wikivoyage wiktionary wikiversity wikibooks'
+    restart: unless-stopped
+
