@@ -9,3 +9,10 @@ services:
     - './data/web-server/:/usr/share/nginx/html'
     restart: unless-stopped
 
+  kolibri:
+    image: treehouses/kolibri
+    ports:
+      - '8080:8080'
+    volumes:
+      - './data/kolibri:/root/.kolibri'
+    restart: unless-stopped
