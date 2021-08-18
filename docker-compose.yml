@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+  web-server:
+    image: nginx
+    ports:
+      - '80:80'
+    volumes:
+    - './data/web-server/:/usr/share/nginx/html'
+    restart: unless-stopped
+
