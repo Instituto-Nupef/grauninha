@@ -23,7 +23,7 @@ services:
       - '8090:80'
     volumes:
       - './data/kiwix/:/data'
-    #command: 'wikipedia wikisource wikivoyage wiktionary wikiversity wikibooks'
+    command: 'wikipedia wikisource wikivoyage wiktionary wikiversity wikibooks'
     restart: unless-stopped
 
   nextcloud:
