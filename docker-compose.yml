@@ -1,39 +1,94 @@
-version: "3"
+version: "2.1"
 
-services:
-  web-server:
-    image: nginx
-    ports:
-      - '80:80'
-    volumes:
-    - './data/web-server/:/usr/share/nginx/html'
-    restart: unless-stopped
-
+volumes:
+  html:
+  mysql:
   kolibri:
+  kiwix:
+services:
+  kolibri:
+    # https://hub.docker.com/r/treehouses/kolibri
     image: treehouses/kolibri
     ports:
       - '8080:8080'
     volumes:
-      - './data/kolibri:/root/.kolibri'
+      - 'kolibri:/root/.kolibri'
     restart: unless-stopped
-
+  # https://hub.docker.com/r/kiwix/kiwix-serve#!
   kiwix:
     image: kiwix/kiwix-serve
     ports:
       - '8090:80'
     volumes:
-      - './data/kiwix/:/data'
+      - 'kiwix:/data'
     command: 'wikipedia wikisource wikivoyage wiktionary wikiversity wikibooks'
     restart: unless-stopped
-
+  # https://hub.docker.com/_/nextcloud/
   nextcloud:
-    image: nextcloud:21
-    ports:
-      - '8070:80'
+    build: nextcloud
+    privileged: true
     volumes:
-      - './data/next/app/config:/var/www/html/config'
-      - './data/next/app/custom_apps:/var/www/html/custom_apps'
-      - './data/next/app/data:/var/www/html/data'
-      - './data/next/app/themes:/var/www/html/themes'
-    restart: unless-stopped
+      - html:/var/www/html
+    environment:
+      MYSQL_HOST: mariadb
+      MYSQL_DATABASE: nextcloud
+      MYSQL_USER: nextcloud
+      MYSQL_PASSWORD: nextcloud
+      REDIS_HOST: redis
+      REDIS_HOST_PASSWORD: nextcloud
+      NEXTCLOUD_TRUSTED_DOMAINS: "nextcloud.local *.balena-devices.com"
+    depends_on:
+      - mariadb
+      - redis
 
+  # https://hub.docker.com/_/nginx/
+  nginx:
+    build: nginx
+    ports:
+      - 80:80/tcp
+    volumes:
+      - html:/var/www/html:ro
+    depends_on:
+      - nextcloud
+
+  # https://hub.docker.com/r/yobasystems/alpine-mariadb
+  mariadb:
+    image: yobasystems/alpine-mariadb:10.5.11
+    volumes:
+      - mysql:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: nextcloud
+      MYSQL_USER: nextcloud
+      MYSQL_PASSWORD: nextcloud
+      MYSQL_ROOT_PASSWORD: balena
+    command:
+      - --transaction-isolation=READ-COMMITTED
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --max-connections=512
+      - --innodb-rollback-on-timeout=OFF
+      - --innodb-lock-wait-timeout=50
+      - --binlog-format=ROW
+      # - --skip-innodb-read-only-compressed
+    # Repurpose the healthcheck cmd by having it export our database on a schedule.
+    # Run the backup every 1 hour to a file called hourly-backup.sql.
+    # How to restore: <https://mariadb.com/kb/en/mysqldump/#restoring>
+    healthcheck:
+      test: mysqldump -uroot -p$MYSQL_ROOT_PASSWORD --all-databases --result-file=/var/lib/mysql/hourly-backup.sql || exit 0
+      interval: 1h
+      timeout: 30s
+      retries: 3
+
+  # https://hub.docker.com/_/redis
+  redis:
+    image: redis:6.0.8-alpine
+    command: redis-server --requirepass nextcloud
+
+  # https://github.com/balenablocks/hostname
+  hostname:
+    image: balenablocks/hostname
+    restart: no
+    labels:
+      io.balena.features.supervisor-api: 1
+    environment:
+      SET_HOSTNAME: nextcloud

@@ -1,48 +1,35 @@
-# grauninha
+# balena-nextcloud
 
-versao 0 de servidor comunitário grauninha, parte do projeto **Grauna** que também conta com o coletor de sites Grauna Memória
+[Nextcloud](https://nextcloud.com/) is a safe home for all your data.
+Access & share your files, calendars, contacts, mail & more from any device, on your terms.
 
----
+## Getting Started
 
-Servidor para pagina de chegada / land page **NGNIX**
+You can one-click-deploy this project to balena using the button below:
 
-Pasta com site em 	
-	
-	dados/web-server/index.html 
- e 
- 	dados/web0-server/img
+[![deploy-with-balena](https://balena.io/deploy.svg)](https://dashboard.balena-cloud.com/deploy?repoUrl=https://github.com/klutchell/balena-nextcloud&defaultDeviceType=raspberrypi4-64)
 
- 
----
+## Manual Deployment
 
-Servidor para material de treinamento e aprendizagem **Kolibri**
+Alternatively, deployment can be carried out by manually creating a [balenaCloud account](https://dashboard.balena-cloud.com) and application, flashing a device, downloading the project and pushing it via the [balena CLI](https://github.com/balena-io/balena-cli).
 
-Pasta de dados em
+### Application Environment Variables
 
-	data/kolibri
+Application envionment variables apply to all services within the application, and can be applied fleet-wide to apply to multiple devices.
 
----
+| Name           | Description                                                                                                       |
+| -------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `TZ`           | Inform services of the [timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) in your location. |
+| `SET_HOSTNAME` | Set a custom hostname on application start. Default is `nextcloud`.                                               |
 
-Servidor de Conteudos Wiki Offline **kiwix**
+## Usage
 
-Pasta de dados em 
+Once your device joins the fleet you'll need to allow some time for it to download the various services.
 
-	data/kiwix
+When it's done you should be able to access the access the dashboard at <http://nextcloud.local>.
 
-Copiar arquivos .zim para essa pasta
+Documentation for Nextcloud can be found at <https://nextcloud.com/support/>.
 
-Passar como argumento de carga da maquina nomes dos arquivos
+## Contributing
 
---- 
-
-Servidor de arquivos **Nextcloud**
-
-Pasta de dados em:
-
-	 - './data/next/app/custom_apps
-      - './data/next/app/data
-      - './data/next/app/themes
-      
----
-
-
+Please open an issue or submit a pull request with any features, fixes, or changes.

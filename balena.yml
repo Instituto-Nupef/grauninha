@@ -1,0 +1,26 @@
+name: "Grauninha"
+type: "sw.application"
+description: "Servidor comunitário grauninha, parte do projeto Grauna que também conta com o coletor de sites Grauna Memória"
+version: 0.0.1
+post-provisioning: >-
+  ## Usage instructions
+
+  Once your device joins the fleet you'll need to allow some time for it to download the various services.
+
+  When it's done you should be able to access the access the dashboard at <http://nextcloud.local>.
+
+  Documentation for Nextcloud can be found at <https://nextcloud.com/support/>.
+assets:
+  repository:
+    type: "blob.asset"
+    data:
+      url: "https://github.com/Instituto-Nupef/grauninha"
+  logo:
+    type: "blob.asset"
+    data:
+      url: "https://github.com/Instituto-Nupef/grauninha/raw/main/data/web-server/img/grauna-memoria.png"
+data:
+  defaultDeviceType: "intel-nuc"
+  supportedDeviceTypes:
+    - "intel-nuc"
+    - "raspberrypi4-64"
