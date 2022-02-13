@@ -2,6 +2,7 @@ version: "2.1"
 
 volumes:
   html:
+  nextcloud:
   mysql:
   kolibri:
   kiwix:
@@ -14,21 +15,34 @@ services:
     volumes:
       - 'kolibri:/root/.kolibri'
     restart: unless-stopped
-  # https://hub.docker.com/r/kiwix/kiwix-serve#!
+  # https://hub.docker.com/r/kiwix/kiwix-serve
   kiwix:
-    image: kiwix/kiwix-serve
+    build: kiwix
+    restart: unless-stopped
     ports:
       - '8090:80'
+    # Adicionar manual em: resin-data/docker/volumes/<APP ID>_<VOLUME NAME>/_<CONTAINER DIRECTORY>
+    # uncomment next 4 lines to use it with local zim file in /tmp/zim
     volumes:
       - 'kiwix:/data'
-    command: 'wikipedia wikisource wikivoyage wiktionary wikiversity wikibooks'
-    restart: unless-stopped
+    command: '*.zim'
+    # Se quiser baixar arquivos
+    # uncomment next 2 lines to use it with remote zim file
+    # environment:
+    #   DOWNLOAD: "https://download.kiwix.org/zim/wikivoyage/wikivoyage_pt_all_maxi_2022-01.zim"
+    #   DOWNLOAD: "https://download.kiwix.org/zim/wikipedia/wikipedia_pt_all_maxi_2021-11.zim"
+    #   DOWNLOAD: "https://download.kiwix.org/zim/wikisource/wikisource_pt_all_maxi_2022-01.zim"
+    #   DOWNLOAD: "https://download.kiwix.org/zim/wiktionary/wiktionary_pt_all_maxi_2022-01.zim"
+    #   DOWNLOAD: "https://download.kiwix.org/zim/wikinews/wikinews_pt_all_maxi_2022-01.zim"
+    #   DOWNLOAD: "https://download.kiwix.org/zim/wikiversity/wikiversity_pt_all_maxi_2022-01.zim"
   # https://hub.docker.com/_/nextcloud/
   nextcloud:
     build: nextcloud
     privileged: true
+    ports:
+      - '8070:80'
     volumes:
-      - html:/var/www/html
+      - nextcloud:/var/www/html
     environment:
       MYSQL_HOST: mariadb
       MYSQL_DATABASE: nextcloud
@@ -36,7 +50,7 @@ services:
       MYSQL_PASSWORD: nextcloud
       REDIS_HOST: redis
       REDIS_HOST_PASSWORD: nextcloud
-      NEXTCLOUD_TRUSTED_DOMAINS: "nextcloud.local *.balena-devices.com"
+      NEXTCLOUD_TRUSTED_DOMAINS: "grauna.local *.balena-devices.com"
     depends_on:
       - mariadb
       - redis
@@ -91,4 +105,4 @@ services:
     labels:
       io.balena.features.supervisor-api: 1
     environment:
-      SET_HOSTNAME: nextcloud
+      SET_HOSTNAME: grauna
