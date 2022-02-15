@@ -1,31 +1,134 @@
 version: "2.1"
 
 volumes:
-  html:
+  pihole_config:
+  dnsmasq_config:
+  proxy:
+  certs:
+  jellyfin-config:
+  jellyfin-cache:
+  media:
+  jellyfin-lib:
+  sync-config:
+  sync-downloads:
+  portal:
   nextcloud:
-  mysql:
+  proxy_mysql:
+  nextcloud_mysql:
   kolibri:
   kiwix:
 services:
+  # https://github.com/balenablocks/wifi-connect
+  wifi-connect:
+    build: wifi-connect
+    restart: always
+    network_mode: host
+    privileged: true
+    labels:
+      io.balena.features.dbus: "1"
+      io.balena.features.firmware: "1"
+    environment:
+      PORTAL_SSID: Grauninha
+      PORTAL_LISTENING_PORT: 8080
+
+  # https://hub.docker.com/r/jc21/nginx-proxy-manager
+  proxy:
+    build: proxy
+    ports:
+      - "80:80"
+      - "81:81"
+      - "443:443"
+    volumes:
+      - proxy:/data
+      - certs:/etc/letsencrypt
+    depends_on:
+      - proxy_db
+  jellyfin:
+    image: jellyfin/jellyfin
+    restart: unless-stopped
+    ports:
+      - 82:8096
+      - 8920:8920 #optional
+      - 7359:7359/udp #optional
+      - 1900:1900/udp #optional
+    volumes:
+      - jellyfin-config:/config
+      - jellyfin-cache:/cache
+      - media:/media
+      - jellyfin-lib:/opt/vc/lib
+    environment:
+      PUID: 1000
+      PGID: 1000
+      JELLYFIN_PublishedServerUrl: guarani.io
+    #devices:
+    #- /dev/vchiq:/dev/vchiq #hardware acceleration for Rasp 3 e 4
+    # - /dev/vcsm:/dev/vcsm #hardware acceleration for Rasp 3
+  # https://hub.docker.com/r/filebrowser/filebrowser
+  filebrowser:
+    image: filebrowser/filebrowser
+    ports:
+      - 83:80
+    volumes:
+      - media:/srv
+    environment:
+      PGID: 1000
+      PUID: 1000
+    command: -- c
+  resilio-sync:
+    image: lscr.io/linuxserver/resilio-sync
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: America/Brasil
+    volumes:
+      - sync-config:/config
+      - sync-downloads:/downloads
+      - media:/sync
+    ports:
+      - 8888:8888
+      - 55555:55555
+    restart: unless-stopped
+  # https://hub.docker.com/r/pihole/pihole
+  pihole:
+    build: pihole
+    network_mode: host
+    privileged: true
+    volumes:
+      - "pihole_config:/etc/pihole"
+      - "dnsmasq_config:/etc/dnsmasq.d"
+    dns:
+      - "127.0.0.1"
+      - "1.1.1.1"
+    environment:
+      WEB_PORT: 89
+    labels:
+      io.balena.features.dbus: "1"
+  # https://github.com/klutchell/unbound-dnscrypt
+  unbound:
+    build: unbound
+    privileged: true
+    ports:
+      - "5053:5053/tcp"
+      - "5053:5053/udp"
   kolibri:
     # https://hub.docker.com/r/treehouses/kolibri
     image: treehouses/kolibri:0.10.3
     ports:
-      - '8080:8080'
+      - "84:8080"
     volumes:
-      - 'kolibri:/root/.kolibri'
+      - "kolibri:/root/.kolibri"
     restart: unless-stopped
   # https://hub.docker.com/r/kiwix/kiwix-serve
   kiwix:
     build: kiwix
     restart: unless-stopped
     ports:
-      - '8090:80'
+      - "85:80"
     # Adicionar manual em: resin-data/docker/volumes/<APP ID>_<VOLUME NAME>/_<CONTAINER DIRECTORY>
     # uncomment next 4 lines to use it with local zim file in /tmp/zim
     volumes:
-      - 'kiwix:/data'
-    command: '*.zim'
+      - "kiwix:/data"
+    command: "*.zim"
     # Se quiser baixar arquivos
     # uncomment next 2 lines to use it with remote zim file
     # environment:
@@ -39,12 +142,11 @@ services:
   nextcloud:
     build: nextcloud
     privileged: true
-    ports:
-      - '8070:80'
     volumes:
       - nextcloud:/var/www/html
+      - media:/var/www/html/data
     environment:
-      MYSQL_HOST: mariadb
+      MYSQL_HOST: nextcloud_db
       MYSQL_DATABASE: nextcloud
       MYSQL_USER: nextcloud
       MYSQL_PASSWORD: nextcloud
@@ -52,24 +154,71 @@ services:
       REDIS_HOST_PASSWORD: nextcloud
       NEXTCLOUD_TRUSTED_DOMAINS: "grauna.local *.balena-devices.com"
     depends_on:
-      - mariadb
+      - nextcloud_db
       - redis
 
   # https://hub.docker.com/_/nginx/
-  nginx:
+  nextcloud-nginx:
     build: nginx
     ports:
-      - 80:80/tcp
+      - 86:80/tcp
     volumes:
-      - html:/var/www/html:ro
+      - nextcloud:/var/www/html:ro
     depends_on:
       - nextcloud
-
+  # https://hub.docker.com/r/alexta69/metube
+  metube:
+    image: alexta69/metube
+    restart: unless-stopped
+    user: "1001:1001"
+    ports:
+      - "87:8081"
+    volumes:
+      - media:/downloads
+    environment:
+      DOWNLOAD_DIR: /downloads/metube-video
+      AUDIO_DOWNLOAD_DIR: /downloads/metube-audio
+    # https://hub.docker.com/_/httpd
+  portal:
+    build: portal
+    restart: unless-stopped
+    ports:
+      - 88:80
+    volumes:
+      - portal:/usr/local/apache2/htdocs/
   # https://hub.docker.com/r/yobasystems/alpine-mariadb
-  mariadb:
+  proxy_db:
     image: yobasystems/alpine-mariadb:10.5.11
     volumes:
-      - mysql:/var/lib/mysql
+      - proxy_mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "npm"
+      MYSQL_DATABASE: "npm"
+      MYSQL_USER: "npm"
+      MYSQL_PASSWORD: "npm"
+      ROOT_PASSWORD: "npm"
+    command:
+      - --transaction-isolation=READ-COMMITTED
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --max-connections=512
+      - --innodb-rollback-on-timeout=OFF
+      - --innodb-lock-wait-timeout=50
+      - --binlog-format=ROW
+      # - --skip-innodb-read-only-compressed
+    # Repurpose the healthcheck cmd by having it export our database on a schedule.
+    # Run the backup every 1 hour to a file called hourly-backup.sql.
+    # How to restore: <https://mariadb.com/kb/en/mysqldump/#restoring>
+    healthcheck:
+      test: mysqldump -uroot -p$MYSQL_ROOT_PASSWORD --all-databases --result-file=/var/lib/mysql/hourly-backup.sql || exit 0
+      interval: 1h
+      timeout: 30s
+      retries: 3
+  # https://hub.docker.com/r/yobasystems/alpine-mariadb
+  nextcloud_db:
+    image: yobasystems/alpine-mariadb:10.5.11
+    volumes:
+      - nextcloud_mysql:/var/lib/mysql
     environment:
       MYSQL_DATABASE: nextcloud
       MYSQL_USER: nextcloud
@@ -83,10 +232,6 @@ services:
       - --innodb-rollback-on-timeout=OFF
       - --innodb-lock-wait-timeout=50
       - --binlog-format=ROW
-      # - --skip-innodb-read-only-compressed
-    # Repurpose the healthcheck cmd by having it export our database on a schedule.
-    # Run the backup every 1 hour to a file called hourly-backup.sql.
-    # How to restore: <https://mariadb.com/kb/en/mysqldump/#restoring>
     healthcheck:
       test: mysqldump -uroot -p$MYSQL_ROOT_PASSWORD --all-databases --result-file=/var/lib/mysql/hourly-backup.sql || exit 0
       interval: 1h

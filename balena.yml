@@ -7,9 +7,22 @@ post-provisioning: >-
 
   Once your device joins the fleet you'll need to allow some time for it to download the various services.
 
-  When it's done you should be able to access the access the dashboard at <http://nextcloud.local>.
+  When it's done you should be able to access the access the dashboard at <http://grauna.local>.
 
-  Documentation for Nextcloud can be found at <https://nextcloud.com/support/>.
+  Services run in following ports:
+  - Nginx Proxy Manager: <http://grauna.local:81>
+  - Jellyfin: <http://grauna.local:82>
+  - Filebrowser: <http://grauna.local:83>
+  - Kolibri: <http://grauna.local:84>
+  - Kiwix: <http://grauna.local:85>
+  - Nextcloud: <http://grauna.local:86>
+  - MeTube: <http://grauna.local:87>
+  - Portal: <http://grauna.local:88>
+  - PiHole: <http://grauna.local:89>
+  - Resilio-Sync: <http://grauna.local:8888>
+
+  Create mappings using Nginx Proxy Manager to have custom domains. Ex.: jellyfin.grauna.local
+
 assets:
   repository:
     type: "blob.asset"
@@ -20,6 +33,19 @@ assets:
     data:
       url: "https://github.com/Instituto-Nupef/grauninha/raw/main/data/web-server/img/grauna-memoria.png"
 data:
+  applicationEnvironmentVariables:
+    - BLOCK: '17:00'
+    - UNBLOCK: '08:00'
+    - DHCP_START: '10.0.0.2'
+    - DHCP_END: '10.0.0.254'
+    - DHCP_GATEWAY: '10.0.0.1'
+    - DHCP_DURATION: '24'
+    - FBCP_DISPLAY: ""
+    - INTERFACE: 'eth0'
+    - SET_HOSTNAME: grauna
+    - PIHOLE_DNS_: '1.1.1.1;1.0.0.1'
+    - WEBPASSWORD: 'grauna'
+    - TZ: 'America/Sao_Paulo'
   defaultDeviceType: "intel-nuc"
   supportedDeviceTypes:
     - "intel-nuc"

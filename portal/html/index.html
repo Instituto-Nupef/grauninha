@@ -13,16 +13,21 @@
       h1 {
         color: #000000;
         font-family: verdana, sans-serif;
-        font-size: 220%;
+        font-size: 1.2em;
         padding: 20px;
         text-align: center;
+      }
+      hr {
+        width: 80%;
+        margin: 0 auto;
       }
       h2 {
         color: #000000;
         font-family: verdana, sans-serif;
-        font-size: 90%;
-        padding-left: 20px;
-        padding-right: 20px;
+        font-size: 0.9em;
+        max-width: 940px;
+        margin: 0 auto;
+        padding: 20px;
         line-height: 1.5;
         text-align: center;
       }
@@ -38,6 +43,7 @@
 
       img {
         max-width: 100%;
+        /* width: 300px; */
         height: auto;
       }
     </style>
@@ -46,34 +52,6 @@
          * {
            box-sizing: border-box;
         }
-
-      .left {
-        background-color: #ffffff;
-        padding: 20px;
-        float: left;
-        width: 25%;
-       }
-
-      .main {
-        background-color: #ffffff;
-        padding: 20px;
-        float: left;
-        width: 25%;
-       }
-
-      .main2 {
-        background-color: #ffffff;
-        padding: 20px;
-        float: left;
-        width: 25%;
-       }
-
-      .right {
-        background-color: #ffffff;
-        padding: 20px;
-        float: left;
-        width: 25%;
-       }
 
       #footer {
       position: fixed;
@@ -110,9 +88,38 @@
       text-decoration: none;
       }
 
+      .items {
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .items > * {
+        width: 300px;
+        padding: 35px 5px;
+      }
+
 
       /* Essa Query adiciona um break point no layout da página */
       /* A largura dos elementos cobre 100% do viewport quando ele cai pra 800px ou menos */
+      @media screen and (min-width: 768px) {
+        h1 {
+          font-size: 3em;
+        }
+        .items {
+          /* max-width: 940px; */
+          margin: 0 auto;
+          flex-flow: row;
+          flex-wrap: wrap;
+          align-items: center;
+          justify-content: center;
+        }
+        .items > * {
+          width: 450px;
+          padding: 35px;
+        }
+      }
 
       @media screen and (max-width: 800px) {
         .left, .main, .main2, .right {
@@ -124,6 +131,7 @@
 
   <body>
     <h1>Sejam bem-vindos ao Graúna Comunitário</h1>
+    <hr />
     <h2>
       Este projeto, realizado pelo Instituto Nupef, é voltado para a memória e a
       difusão de conteúdos de interesse público. Nele, você encontrará
@@ -132,29 +140,44 @@
       cultura e saúde no Nextcloud, que também poderá armazenar conteúdos
       produzidos pela própria comunidade. Esperamos que gostem!
     </h2>
-    <center>
-      <div class="left">
-        <a href="http://grauna.local:8070"
+    <main class="items">
+      <div>
+        <a href="http://nuvem.grauna.local"
           ><img src="img/nextcloud.png" alt="Nuvem Social"
         /></a>
       </div>
-      <div class="main">
-        <a href="http://grauna.local:8080"
+      <div>
+        <a href="http://cursos.grauna.local"
           ><img src="img/kolibri-h.png" alt="Kolibri"
         /></a>
       </div>
-      <div class="main2">
-        <a href="http://grauna.local:8090"
+      <div>
+        <a href="http://filtro.grauna.local"
+          ><img src="img/pihole.png" alt="Pihole"
+        /></a>
+      </div>
+      <div>
+        <a href="http://flix.grauna.local"
+          ><img src="img/jellyfin.png" alt="Jellyfin"
+        /></a>
+      </div>
+      <div>
+        <a href="http://sync.grauna.local"
+          ><img src="img/resilio_sync.png" alt="Resilio Sync"
+        /></a>
+      </div>
+      <div>
+        <a href="http://wiki.grauna.local"
           ><img src="img/kiwix.png" alt="Kiwix"
         /></a>
       </div>
-      <div class="right">
+      <div>
         <!-- <a href="http://local.grauna.org.br:......">--><img
           src="img/grauna-memoria.png"
           alt="Graúna Memória"
         /><!--</a>-->
       </div>
-    </center>
+    </main>
 
     <p>&nbsp;</p>
     <p>&nbsp;</p>
