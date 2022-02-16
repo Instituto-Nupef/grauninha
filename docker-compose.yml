@@ -251,3 +251,7 @@ services:
       io.balena.features.supervisor-api: 1
     environment:
       SET_HOSTNAME: grauna
+  external-drive:
+    build: storage
+    privileged: true
+
