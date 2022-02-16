@@ -112,7 +112,7 @@ services:
       - "5053:5053/udp"
   kolibri:
     # https://hub.docker.com/r/treehouses/kolibri
-    image: treehouses/kolibri:0.10.3
+    image: treehouses/kolibri
     ports:
       - "84:8080"
     volumes:
