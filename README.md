@@ -36,14 +36,25 @@ Application envionment variables apply to all services within the application, a
   - MeTube: <http://grauna.local:87>
   - Portal: <http://grauna.local:88>
   - PiHole: <http://grauna.local:89>
+  - Visual Code Studio: <http://grauna.local:90>
+  - Calibre: <http://grauna.local:91>
   - Resilio-Sync: <http://grauna.local:8888>
+  - WiFi Connect: <http://grauna.local:8080>
+
 
   Create mappings using Nginx Proxy Manager to have custom domains. Ex.: jellyfin.grauna.local
 
 
 ## Configurando
 
+## WiFi Connect
+
+Quando ligar sem conexão de internet por cabo, Grauninha vai criar um WiFi. Conectando no WiFi você pode conecta-lo
+a uma rede WiFi pelo: http://grauna.local:8080
+
 ## Passar pelo wizzard
+
+Você deve configurar cada um dos seguintes aplicativos manualmente:
 
 Jellyfin, Kolibri, Resilio-Sync, Nextcloud
 

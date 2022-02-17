@@ -3,9 +3,7 @@ type: "sw.application"
 description: "Servidor comunitário grauninha, parte do projeto Grauna que também conta com o coletor de sites Grauna Memória"
 version: 0.0.1
 post-provisioning: >-
-  ## Usage instructions
-
-  Once your device joins the fleet you'll need to allow some time for it to download the various services.
+    Once your device joins the fleet you'll need to allow some time for it to download the various services.
 
   When it's done you should be able to access the access the dashboard at <http://grauna.local>.
 
@@ -19,7 +17,11 @@ post-provisioning: >-
   - MeTube: <http://grauna.local:87>
   - Portal: <http://grauna.local:88>
   - PiHole: <http://grauna.local:89>
+  - Visual Code Studio: <http://grauna.local:90>
+  - Calibre: <http://grauna.local:91>
   - Resilio-Sync: <http://grauna.local:8888>
+  - WiFi Connect: <http://grauna.local:8080>
+
 
   Create mappings using Nginx Proxy Manager to have custom domains. Ex.: jellyfin.grauna.local
 
