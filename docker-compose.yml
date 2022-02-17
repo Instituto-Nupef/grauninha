@@ -9,6 +9,8 @@ volumes:
   jellyfin-cache:
   media:
   jellyfin-lib:
+  calibre:
+  calibre-config:
   sync-config:
   sync-downloads:
   portal:
@@ -178,7 +180,21 @@ services:
     environment:
       DOWNLOAD_DIR: /downloads/metube-video
       AUDIO_DOWNLOAD_DIR: /downloads/metube-audio
-    # https://hub.docker.com/_/httpd
+  # https://hub.docker.com/r/linuxserver/calibre-web/
+  calibre:
+    image: linuxserver/calibre-web
+    environment:
+      PGID: 1000
+      PUID: 1000
+      TZ: America/Brasil
+      PASSWORD: grauna
+    ports:
+      - 91:8083
+    volumes:
+      - calibre-config:/config
+      - calibre:/books
+    restart: unless-stopped
+  # https://hub.docker.com/_/httpd
   portal:
     build: portal
     restart: unless-stopped
@@ -254,4 +270,7 @@ services:
   external-drive:
     build: storage
     privileged: true
-
+    volumes:
+      - media:/usr/src/media
+      - kiwix:/usr/src/kiwix
+      - calibre:/usr/src/calibre
