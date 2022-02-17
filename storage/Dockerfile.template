@@ -5,7 +5,7 @@ ENV UDEV=on
 COPY udev/usb.rules /etc/udev/rules.d/usb.rules
 
 # Install dependencies
-RUN install_packages findmnt util-linux grep
+RUN install_packages findmnt util-linux grep fuse ntfs-3g
 
 WORKDIR /usr/src
 COPY scripts scripts
