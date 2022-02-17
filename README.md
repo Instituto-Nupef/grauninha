@@ -40,6 +40,41 @@ Application envionment variables apply to all services within the application, a
 
   Create mappings using Nginx Proxy Manager to have custom domains. Ex.: jellyfin.grauna.local
 
+
+## Configurando
+
+## Passar pelo wizzard
+
+Jellyfin, Kolibri, Resilio-Sync, Nextcloud
+
+### Nginx Proxy Manager
+
+Email:    admin@example.com
+Password: changeme
+
+### Filebrowser
+
+Usuário: `admin`
+Senha: `admin`
+
+### Calibre
+
+Usuário: `admin`
+Senha: `admin123`
+Configdb: `/books/` (precisa ter arquivos metadata.db gerado pelo Calibre)
+
+### PiHole
+
+Senha definida na env WEBPASSWORD do dispositivo, padrão: `grauna`
+
+### Code
+
+Senha definida na env PASSWORD do dispositivo, padrão: `grauna`
+
 ## Contributing
 
 Please open an issue or submit a pull request with any features, fixes, or changes.
+
+Use `balena push nupef/grauninha --draft --release-tag "feature-name-test"` to publish draft releases.
+
+Use `balena push nupef/grauninha --release-tag "feature-name"` to publish a release.
