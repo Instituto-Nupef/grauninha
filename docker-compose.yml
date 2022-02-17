@@ -15,6 +15,7 @@ volumes:
   sync-downloads:
   portal:
   nextcloud:
+  portal-config:
   proxy_mysql:
   nextcloud_mysql:
   kolibri:
@@ -199,9 +200,24 @@ services:
     build: portal
     restart: unless-stopped
     ports:
-      - 88:80
+      - 88:8080
     volumes:
-      - portal:/usr/local/apache2/htdocs/
+      - portal:/var/www
+  # https://hub.docker.com/r/linuxserver/code-server
+  code:
+    image: ghcr.io/linuxserver/code-server
+    ports:
+      - 90:8443
+    restart: unless-stopped
+    volumes:
+      - portal-config:/config
+      - portal:/config/workspace
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: America/Brasil
+      PASSWORD: grauna
+      PROXY_DOMAIN: code.grauna.local
   # https://hub.docker.com/r/yobasystems/alpine-mariadb
   proxy_db:
     image: yobasystems/alpine-mariadb:10.5.11

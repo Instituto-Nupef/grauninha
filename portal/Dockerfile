@@ -1,3 +1,5 @@
-FROM httpd:alpine
+FROM communityfirst/live-server
 
-COPY html/ /usr/local/apache2/htdocs/
+COPY html/ /var/www
+
+EXPOSE 8080
