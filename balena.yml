@@ -3,10 +3,11 @@ type: "sw.application"
 description: "Servidor comunitário grauninha, parte do projeto Grauna que também conta com o coletor de sites Grauna Memória"
 version: 0.0.1
 post-provisioning: >-
-    Once your device joins the fleet you'll need to allow some time for it to download the various services.
+  ## Usage instructions
+
+  Once your device joins the fleet you'll need to allow some time for it to download the various services.
 
   When it's done you should be able to access the access the dashboard at <http://grauna.local>.
-
   Services run in following ports:
   - Nginx Proxy Manager: <http://grauna.local:81>
   - Jellyfin: <http://grauna.local:82>
