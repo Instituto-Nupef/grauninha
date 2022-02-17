@@ -119,8 +119,7 @@ services:
     ports:
       - "84:8080"
     volumes:
-      - "kolibri:/root/.kolibri"
-    restart: unless-stopped
+      - kolibri:/root/.kolibri
   # https://hub.docker.com/r/kiwix/kiwix-serve
   kiwix:
     build: kiwix
@@ -130,7 +129,7 @@ services:
     # Adicionar manual em: resin-data/docker/volumes/<APP ID>_<VOLUME NAME>/_<CONTAINER DIRECTORY>
     # uncomment next 4 lines to use it with local zim file in /tmp/zim
     volumes:
-      - "kiwix:/data"
+      - kiwix:/data
     command: "*.zim"
     # Se quiser baixar arquivos
     # uncomment next 2 lines to use it with remote zim file
@@ -175,7 +174,7 @@ services:
     restart: unless-stopped
     user: "1001:1001"
     ports:
-      - "87:8081"
+      - 87:8081
     volumes:
       - media:/downloads
     environment:
@@ -288,5 +287,9 @@ services:
     privileged: true
     volumes:
       - media:/usr/src/media
+      - jellyfin-config:/usr/src/jellyfin-config
       - kiwix:/usr/src/kiwix
       - calibre:/usr/src/calibre
+      - portal:/usr/src/portal
+      - nextcloud:/usr/src/nextcloud
+      - kolibri:/usr/src/kolibri
