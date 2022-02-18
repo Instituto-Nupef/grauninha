@@ -44,6 +44,7 @@ Application envionment variables apply to all services within the application, a
 
   Create mappings using Nginx Proxy Manager to have custom domains. Ex.: jellyfin.grauna.local
 
+  Connect to a HDMI source to use the browser kiosk.
 
 ## Configurando
 
@@ -58,15 +59,37 @@ Você deve configurar cada um dos seguintes aplicativos manualmente:
 
 Jellyfin, Kolibri, Resilio-Sync, Nextcloud
 
+## Jellyfin
+
+Como usuário admin crie um novo usuário sem senha e desmarque a opção "Ocultar este usuário das telas de login" para que exista um usuário aberto para a comunidade.
+
+## Kiwix
+
+O serviço so nicia quando encontra arquivos zim. Passe a variável `DOWNLOAD` com a url de algum arquivo zim. Ex.: `https://download.kiwix.org/zim/wikiversity/wikiversity_pt_all_maxi_2022-01.zim`
+
+Ou adicione na pasta manualmente pela linha de comando de um drive externo.
+
 ### Nginx Proxy Manager
 
 Email:    admin@example.com
 Password: changeme
 
+Nas configurações modifique a página padrão (Default Site) para que seja o portal. Adicione os domínios em "Add Proxy Host".
+
+> Dica para LibreRouter / LibreMesh
+
+Para uma melhor experiência adicione crie um arquivo `.conf` novo em `etc/config/dnsmasq.d/` com uma máscara de domínio para o ip do Grauninha:
+
+```
+address=/comunidade.app/10.147.143.9
+```
+
 ### Filebrowser
 
 Usuário: `admin`
 Senha: `admin`
+
+Criei novo usuário com idioma em português.
 
 ### Calibre
 
@@ -74,13 +97,23 @@ Usuário: `admin`
 Senha: `admin123`
 Configdb: `/books/` (precisa ter arquivos metadata.db gerado pelo Calibre)
 
+Logado como usuário administrador mude o idioma para português, habilite navegação anônima e uploads.
+Edite o usuário Guest para que possa fazer upload e ver todas secções.
+Também pode mudar o título do serviço em configurações de UI.
+
 ### PiHole
 
-Senha definida na env WEBPASSWORD do dispositivo, padrão: `grauna`
+Senha definida pela variável `WEBPASSWORD` do dispositivo, padrão: `grauna`
+
+Você pode ter que modificar a variável `INTERFACE` para estar de acordo com seu dispositivo.
 
 ### Code
 
-Senha definida na env PASSWORD do dispositivo, padrão: `grauna`
+Senha definida pela variável `PASSWORD` do dispositivo, padrão: `grauna`
+
+### ZeroTier
+
+Add your ZeroTier network ID as a "Device Service Variable" named `ZT_NETWORK`
 
 ## Contributing
 
@@ -89,3 +122,9 @@ Please open an issue or submit a pull request with any features, fixes, or chang
 Use `balena push nupef/grauninha --draft --release-tag "feature-name-test"` to publish draft releases.
 
 Use `balena push nupef/grauninha --release-tag "feature-name"` to publish a release.
+
+## TODO
+
+- Fix auto-mount usb
+- Add smart auto-syncing from usb
+- Add [scp server](https://github.com/synapzlu/balena-scpserver)

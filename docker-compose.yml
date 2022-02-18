@@ -148,7 +148,6 @@ services:
     privileged: true
     volumes:
       - nextcloud:/var/www/html
-      - media:/var/www/html/data
     environment:
       MYSQL_HOST: nextcloud_db
       MYSQL_DATABASE: nextcloud
@@ -173,8 +172,7 @@ services:
   # https://hub.docker.com/r/alexta69/metube
   metube:
     image: alexta69/metube
-    restart: unless-stopped
-    user: "1001:1001"
+    user: "1000:1000"
     ports:
       - 87:8081
     volumes:
@@ -196,7 +194,7 @@ services:
       - calibre-config:/config
       - calibre:/books
     restart: unless-stopped
-  # https://hub.docker.com/_/httpd
+  # https://hub.docker.com/r/communityfirst/live-server
   portal:
     build: portal
     restart: unless-stopped
@@ -323,6 +321,7 @@ services:
       io.balena.features.supervisor-api: 1
     environment:
       SET_HOSTNAME: grauna
+  # https://github.com/balena-io-examples/balena-storage
   external-drive:
     build: storage
     privileged: true
