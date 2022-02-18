@@ -41,7 +41,7 @@ services:
     build: proxy
     ports:
       - "80:80"
-      - "81:81"
+      - "8081:81"
       - "443:443"
     volumes:
       - proxy:/data
@@ -52,7 +52,7 @@ services:
     image: jellyfin/jellyfin
     restart: unless-stopped
     ports:
-      - 82:8096
+      - 8082:8096
       - 8920:8920 #optional
       - 7359:7359/udp #optional
       - 1900:1900/udp #optional
@@ -72,7 +72,7 @@ services:
   filebrowser:
     image: filebrowser/filebrowser
     ports:
-      - 83:80
+      - 8083:80
     volumes:
       - media:/srv
     environment:
@@ -90,7 +90,7 @@ services:
       - sync-downloads:/downloads
       - media:/sync
     ports:
-      - 8888:8888
+      - 8092:8888
       - 55555:55555
     restart: unless-stopped
   # https://hub.docker.com/r/pihole/pihole
@@ -105,7 +105,7 @@ services:
       - "127.0.0.1"
       - "1.1.1.1"
     environment:
-      WEB_PORT: 89
+      WEB_PORT: 8089
     labels:
       io.balena.features.dbus: "1"
   # https://github.com/klutchell/unbound-dnscrypt
@@ -119,7 +119,7 @@ services:
     # https://hub.docker.com/r/treehouses/kolibri
     image: treehouses/kolibri
     ports:
-      - "84:8080"
+      - "8084:8080"
     volumes:
       - kolibri:/root/.kolibri
   # https://hub.docker.com/r/kiwix/kiwix-serve
@@ -127,7 +127,7 @@ services:
     build: kiwix
     restart: unless-stopped
     ports:
-      - "85:80"
+      - "8085:80"
     # Adicionar manual em: resin-data/docker/volumes/<APP ID>_<VOLUME NAME>/_<CONTAINER DIRECTORY>
     # uncomment next 4 lines to use it with local zim file in /tmp/zim
     volumes:
@@ -164,7 +164,7 @@ services:
   nextcloud-nginx:
     build: nginx
     ports:
-      - 86:80/tcp
+      - 8087:80/tcp
     volumes:
       - nextcloud:/var/www/html:ro
     depends_on:
@@ -172,9 +172,8 @@ services:
   # https://hub.docker.com/r/alexta69/metube
   metube:
     image: alexta69/metube
-    user: "1000:1000"
     ports:
-      - 87:8081
+      - 8086:8081
     volumes:
       - media:/downloads
     environment:
@@ -189,7 +188,7 @@ services:
       TZ: America/Brasil
       PASSWORD: grauna
     ports:
-      - 91:8083
+      - 8091:8083
     volumes:
       - calibre-config:/config
       - calibre:/books
@@ -199,14 +198,14 @@ services:
     build: portal
     restart: unless-stopped
     ports:
-      - 88:8080
+      - 8088:8080
     volumes:
       - portal:/var/www
   # https://hub.docker.com/r/linuxserver/code-server
   code:
     image: ghcr.io/linuxserver/code-server
     ports:
-      - 90:8443
+      - 8090:8443
     restart: unless-stopped
     volumes:
       - portal-config:/config
@@ -284,7 +283,7 @@ services:
     volumes:
       - 'browser-settings:/data' # Only required if using PERSISTENT flag (see below)
     environment:
-      LAUNCH_URL: http://localhost:88
+      LAUNCH_URL: http://localhost:8088
       PERSISTENT: 1
       SHOW_CURSOR: 1
       DISPLAY_NUM: 1

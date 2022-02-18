@@ -27,19 +27,19 @@ Application envionment variables apply to all services within the application, a
   When it's done you should be able to access the access the dashboard at <http://grauna.local>.
 
   Services run in following ports:
-  - Nginx Proxy Manager: <http://grauna.local:81>
-  - Jellyfin: <http://grauna.local:82>
-  - Filebrowser: <http://grauna.local:83>
-  - Kolibri: <http://grauna.local:84>
-  - Kiwix: <http://grauna.local:85>
-  - Nextcloud: <http://grauna.local:86>
-  - MeTube: <http://grauna.local:87>
-  - Portal: <http://grauna.local:88>
-  - PiHole: <http://grauna.local:89>
-  - Visual Code Studio: <http://grauna.local:90>
-  - Calibre: <http://grauna.local:91>
-  - Resilio-Sync: <http://grauna.local:8888>
   - WiFi Connect: <http://grauna.local:8080>
+  - Nginx Proxy Manager: <http://grauna.local:8081>
+  - Jellyfin: <http://grauna.local:8082>
+  - Filebrowser: <http://grauna.local:8083>
+  - Kolibri: <http://grauna.local:8084>
+  - Kiwix: <http://grauna.local:8085>
+  - MeTube: <http://grauna.local:8086>
+  - Nextcloud: <http://grauna.local:8087>
+  - Portal: <http://grauna.local:8088>
+  - PiHole: <http://grauna.local:8089>
+  - Visual Code Studio: <http://grauna.local:8090>
+  - Calibre: <http://grauna.local:8091>
+  - Resilio-Sync: <http://grauna.local:8092>
 
 
   Create mappings using Nginx Proxy Manager to have custom domains. Ex.: jellyfin.grauna.local
@@ -105,7 +105,7 @@ Também pode mudar o título do serviço em configurações de UI.
 
 Senha definida pela variável `WEBPASSWORD` do dispositivo, padrão: `grauna`
 
-Você pode ter que modificar a variável `INTERFACE` para estar de acordo com seu dispositivo.
+Você pode ter que modificar a variável `INTERFACE` para estar de acordo com a interface do seu dispotivo. Use `ip link show` para ver a interface de ethernet correta.
 
 ### Code
 
@@ -113,7 +113,12 @@ Senha definida pela variável `PASSWORD` do dispositivo, padrão: `grauna`
 
 ### ZeroTier
 
-Add your ZeroTier network ID as a "Device Service Variable" named `ZT_NETWORK`
+1. Add your ZeroTier network ID as a "Device Service Variable" named ZT_NETWORK
+2. Host system preparation : SSH into the host system and execute zerotier-host-setup.sh. For increased control, you can also type the 8 commands manually. You can use `curl -o /tmp/zerotier-host-setup.sh https://raw.githubusercontent.com/synapzlu/balena-zerotier/master/scripts/zerotier-host-setup.sh && sh /tmp/zerotier-host-setup.sh` to download and execute.
+3. Unpin the device release and monitor container download and startup
+4. After a couple of minutes, a new "Not Authorized" member should appear in your ZeroTier dashboard.
+5. Before authorizing this new member, be sure to tick "Allow Bridging" and "Do Not Auto Assign IPs". This last option will let your local DHCP assign an IP to your container's ZeroTier interface.
+6. Use any mobile or device not connected to your LAN, install ZeroTier client, connect to the same network ID, authorize this member WITHOUT "Allow Bridging" and "Do Not Auto Assign IPs" features. They must stay UNticked.
 
 ## Contributing
 
@@ -125,6 +130,8 @@ Use `balena push nupef/grauninha --release-tag "feature-name"` to publish a rele
 
 ## TODO
 
+- Fix PiHole
 - Fix auto-mount usb
 - Add smart auto-syncing from usb
 - Add [scp server](https://github.com/synapzlu/balena-scpserver)
+- Best way to use ZeroTier
