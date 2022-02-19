@@ -83,7 +83,6 @@ Para uma melhor experiência adicione crie um arquivo `.conf` novo em `etc/confi
 ```
 address=/comunidade.app/10.147.143.9
 ```
-
 ### Filebrowser
 
 Usuário: `admin`
@@ -91,6 +90,10 @@ Senha: `admin`
 
 Criei novo usuário com idioma em português.
 
+
+### MeTube
+
+Usando o serviço "FIlebrowser" crie duas pastas novas: `metube-audio` e `metube-video`.
 ### Calibre
 
 Usuário: `admin`
@@ -130,7 +133,6 @@ Use `balena push nupef/grauninha --release-tag "feature-name"` to publish a rele
 
 ## TODO
 
-- Fix PiHole
 - Fix auto-mount usb
 - Add smart auto-syncing from usb
 - Add [scp server](https://github.com/synapzlu/balena-scpserver)

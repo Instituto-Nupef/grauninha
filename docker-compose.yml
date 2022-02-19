@@ -106,6 +106,7 @@ services:
       - "1.1.1.1"
     environment:
       WEB_PORT: 8089
+      WEBPASSWORD: grauna
     labels:
       io.balena.features.dbus: "1"
   # https://github.com/klutchell/unbound-dnscrypt

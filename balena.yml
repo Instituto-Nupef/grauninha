@@ -47,6 +47,7 @@ data:
     - INTERFACE: 'eth0'
     - SET_HOSTNAME: grauna
     - PIHOLE_DNS_: '1.1.1.1;1.0.0.1'
+    - DNSMASQ_LISTENING: 'single'
     - WEBPASSWORD: 'grauna'
     - PASSWORD: 'grauna'
     - TZ: 'America/Sao_Paulo'
