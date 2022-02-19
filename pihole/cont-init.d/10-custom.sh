@@ -6,16 +6,16 @@ set -e
 pihole -a -p "${WEBPASSWORD}" || true
 
 # Add Whitelist
-pihole --white-regex '(\.|^)whatsapp\.com$'
-pihole --white-regex '(\.|^)whatsapp\.net$'
-pihole --white-regex '(\.|^)fbcdn\.net$'
-pihole --white-regex '(\.|^)wa\.me$'
-pihole --white-regex '(\.|^)signal\.org$'
-pihole --white-regex '(\.|^)whispersystems\.org$'
-pihole --white-regex '(\.|^)souqcdn\.com$'
+# pihole --white-regex '(\.|^)whatsapp\.com$'
+# pihole --white-regex '(\.|^)whatsapp\.net$'
+# pihole --white-regex '(\.|^)fbcdn\.net$'
+# pihole --white-regex '(\.|^)wa\.me$'
+# pihole --white-regex '(\.|^)signal\.org$'
+# pihole --white-regex '(\.|^)whispersystems\.org$'
+# pihole --white-regex '(\.|^)souqcdn\.com$'
 
 # Enable DHCP
-pihole -a enabledhcp "${DHCP_START}" "${DHCP_END}" "${DHCP_GATEWAY}" "${DHCP_DURATION}" "peti"
+# pihole -a enabledhcp "${DHCP_START}" "${DHCP_END}" "${DHCP_GATEWAY}" "${DHCP_DURATION}" "peti"
 
 while [ -z "$(ip -o -4 addr show dev "${INTERFACE}")" ]
 do

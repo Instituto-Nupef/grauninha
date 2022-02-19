@@ -4,7 +4,7 @@ FROM pihole/pihole:2021.10.1
 WORKDIR /usr/src/app
 
 COPY cont-init.d/ /etc/cont-init.d/
-COPY services/ /etc/services.d/
+# COPY services/ /etc/services.d/
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -28,12 +28,12 @@ ENV DNSMASQ_LISTENING single
 ENV PIHOLE_DNS_ 1.1.1.1;1.0.0.1
 ENV FONTFACE Terminus
 ENV FONTSIZE 8x14
-ENV WEBPASSWORD guarani
+ENV WEBPASSWORD grauna
 ENV VIRTUAL_HOST balena-devices.com
 ENV BLOCK 17:00
 ENV UNBLOCK 08:00
 ENV TZ 'America/Sao_Paulo'
-ENV WEB_PORT 89
+ENV WEB_PORT 8089
 ENV DHCP_START '10.0.0.2'
 ENV DHCP_END '10.0.0.254'
 ENV DHCP_GATEWAY '10.0.0.1'
