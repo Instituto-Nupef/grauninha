@@ -1,0 +1,221 @@
+version: '3'
+
+services:
+  proxy:
+    image: nginxproxy/nginx-proxy:latest
+    labels:
+      com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy: 'true'
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ${DATA_DIR}/proxy/certs:/etc/nginx/certs:ro
+      - ${DATA_DIR}/proxy/vhostd:/etc/nginx/vhost.d
+      - ${DATA_DIR}/proxy/html:/usr/share/nginx/html
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      # - ./nginx-conf/client_max_body_size.conf:/etc/nginx/conf.d/max_body.conf
+    restart: always
+  ssl:
+    image: nginxproxy/acme-companion:latest
+    container_name: ssl
+    environment:
+      - NGINX_PROXY_CONTAINER=proxy
+      - DEFAULT_EMAIL=${CERT_MAIL}
+    volumes:
+      - ${DATA_DIR}/proxy/certs:/etc/nginx/certs
+      - ${DATA_DIR}/proxy/vhostd:/etc/nginx/vhost.d
+      - ${DATA_DIR}/proxy/html:/usr/share/nginx/html
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: always
+  jellyfin:
+    image: jellyfin/jellyfin
+    restart: unless-stopped
+    ports:
+      - 8920:8920 #optional
+      - 7359:7359/udp #optional
+      - 1900:1900/udp #optional
+    volumes:
+      - ${DATA_DIR}/jellyfin/config:/config
+      - ${DATA_DIR}/jellyfin/cache:/cache
+      - ${DATA_DIR}/media:/media
+    environment:
+      VIRTUAL_HOST: ${DOMAIN_JELLYFIN}
+      LETSENCRYPT_HOST: ${DOMAIN_JELLYFIN}
+      VIRTUAL_PORT: 8096
+      PUID: 1000
+      PGID: 1000
+      JELLYFIN_PublishedServerUrl: jellyfin.grauna.org.br
+    #devices:
+    #- /dev/vchiq:/dev/vchiq #hardware acceleration for Rasp 3 e 4
+    # - /dev/vcsm:/dev/vcsm #hardware acceleration for Rasp 3
+  # https://hub.docker.com/r/filebrowser/filebrowser
+  filebrowser:
+    image: filebrowser/filebrowser
+    volumes:
+      - ${DATA_DIR}/media:/srv
+    environment:
+      VIRTUAL_HOST: ${DOMAIN_FILEBROWSER}
+      LETSENCRYPT_HOST: ${DOMAIN_FILEBROWSER}
+      PGID: 1000
+      PUID: 1000
+    command: -- c
+  resilio-sync:
+    image: lscr.io/linuxserver/resilio-sync
+    environment:
+      VIRTUAL_HOST: ${DOMAIN_SYNC}
+      LETSENCRYPT_HOST: ${DOMAIN_SYNC}
+      VIRTUAL_PORT: 8888
+      PUID: 1000
+      PGID: 1000
+      TZ: America/Brasil
+    volumes:
+      - ${DATA_DIR}/sync/config:/config
+      - ${DATA_DIR}/sync/downloads:/downloads
+      - ${DATA_DIR}/media:/sync
+    ports:
+      - 55555:55555
+    restart: unless-stopped
+  kolibri:
+    build: ../services/kolibri
+    environment:
+      VIRTUAL_HOST: ${DOMAIN_KOLIBRI}
+      LETSENCRYPT_HOST: ${DOMAIN_KOLIBRI}
+      VIRTUAL_PORT: 8080
+    volumes:
+      - ${DATA_DIR}/kolibri:/root/.kolibri
+  # https://hub.docker.com/r/kiwix/kiwix-serve
+  kiwix:
+    build: ../services/kiwix
+    restart: unless-stopped
+    # Adicionar manual em: ${DATA_DIR}/kiwix
+    # uncomment next 4 lines to use it with local zim file in /tmp/zim
+    volumes:
+      - ${DATA_DIR}/kiwix:/data
+    command: '*.zim'
+    # Se quiser baixar arquivos
+    # uncomment next 2 lines to use it with remote zim file
+    environment:
+      VIRTUAL_HOST: ${DOMAIN_KIWIX}
+      LETSENCRYPT_HOST: ${DOMAIN_KIWIX}
+    #   DOWNLOAD: "https://download.kiwix.org/zim/wikivoyage/wikivoyage_pt_all_maxi_2022-01.zim"
+    #   DOWNLOAD: "https://download.kiwix.org/zim/wikipedia/wikipedia_pt_all_maxi_2021-11.zim"
+    #   DOWNLOAD: "https://download.kiwix.org/zim/wikisource/wikisource_pt_all_maxi_2022-01.zim"
+    #   DOWNLOAD: "https://download.kiwix.org/zim/wiktionary/wiktionary_pt_all_maxi_2022-01.zim"
+    #   DOWNLOAD: "https://download.kiwix.org/zim/wikinews/wikinews_pt_all_maxi_2022-01.zim"
+    #   DOWNLOAD: "https://download.kiwix.org/zim/wikiversity/wikiversity_pt_all_maxi_2022-01.zim"
+  # https://hub.docker.com/_/nextcloud/
+  nextcloud:
+    build: ../services/nextcloud
+    privileged: true
+    volumes:
+      - ${DATA_DIR}/nextcloud:/var/www/html
+    environment:
+      VIRTUAL_HOST: ${DOMAIN_NEXTCLOUD}
+      LETSENCRYPT_HOST: ${DOMAIN_NEXTCLOUD}
+      MYSQL_HOST: nextcloud_db
+      MYSQL_DATABASE: nextcloud
+      MYSQL_USER: nextcloud
+      MYSQL_PASSWORD: ${PASSWORD}
+      REDIS_HOST: redis
+      REDIS_HOST_PASSWORD: ${PASSWORD}
+      # NEXTCLOUD_TRUSTED_DOMAINS: "grauna.local"
+    depends_on:
+      - nextcloud_db
+      - redis
+  # https://hub.docker.com/r/alexta69/metube
+  metube:
+    image: alexta69/metube
+    volumes:
+      - ${DATA_DIR}/media:/downloads
+    environment:
+      VIRTUAL_HOST: ${DOMAIN_NEXTCLOUD}
+      LETSENCRYPT_HOST: ${DOMAIN_NEXTCLOUD}
+      VIRTUAL_PORT: 8081
+      DOWNLOAD_DIR: /downloads/metube-video
+      AUDIO_DOWNLOAD_DIR: /downloads/metube-audio
+  # https://hub.docker.com/r/linuxserver/calibre-web/
+  calibre:
+    image: linuxserver/calibre-web
+    environment:
+      VIRTUAL_HOST: ${DOMAIN_CALIBRE}
+      LETSENCRYPT_HOST: ${DOMAIN_CALIBRE}
+      VIRTUAL_PORT: 8091
+      PGID: 1000
+      PUID: 1000
+      TZ: America/Brasil
+      PASSWORD: ${PASSWORD}
+    volumes:
+      - ${DATA_DIR}/calibre-config:/config
+      - ${DATA_DIR}/calibre:/books
+    restart: unless-stopped
+  # https://hub.docker.com/r/communityfirst/live-server
+  portal:
+    build: ../services/portal
+    restart: unless-stopped
+    ports:
+      - 8088:8080
+    volumes:
+      - ${DATA_DIR}/portal:/var/www
+  # https://hub.docker.com/r/linuxserver/code-server
+  code:
+    image: ghcr.io/linuxserver/code-server
+    restart: unless-stopped
+    volumes:
+      - ${DATA_DIR}/portal-config:/config
+      - ${DATA_DIR}/portal:/config/workspace
+    environment:
+      VIRTUAL_HOST: ${DOMAIN_CODE}
+      LETSENCRYPT_HOST: ${DOMAIN_CODE}
+      VIRTUAL_PORT: 8090
+      PUID: 1000
+      PGID: 1000
+      TZ: America/Brasil
+      PASSWORD: ${PASSWORD}
+      PROXY_DOMAIN: code.grauna.local
+  # https://hub.docker.com/r/yobasystems/alpine-mariadb
+  nextcloud_db:
+    image: yobasystems/alpine-mariadb:10.5.11
+    volumes:
+      - ${DATA_DIR}/nextcloud_mysql:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: nextcloud
+      MYSQL_USER: nextcloud
+      MYSQL_PASSWORD: ${PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${PASSWORD}
+    command:
+      - --transaction-isolation=READ-COMMITTED
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --max-connections=512
+      - --innodb-rollback-on-timeout=OFF
+      - --innodb-lock-wait-timeout=50
+      - --binlog-format=ROW
+    healthcheck:
+      test: mysqldump -uroot -p$PASSWORD --all-databases --result-file=/var/lib/mysql/hourly-backup.sql || exit 0
+      interval: 1h
+      timeout: 30s
+      retries: 3
+
+  # https://hub.docker.com/_/redis
+  redis:
+    image: redis:6.0.8-alpine
+    command: redis-server --requirepass nextcloud
+  # https://github.com/synapzlu/balena-zerotier
+  zerotier:
+    # This volume is needed to make ZT configuration survive a reboot and new container version
+    volumes:
+      - ${DATA_DIR}/zerotier:/var/lib/zerotier-one
+    build: ../services/zerotier
+    # privileged is needed for ZeroTier to avoid "cannot bind to local control interface port" error
+    privileged: true
+    network_mode: host
+    # SYS_ADMIN is needed because NET_ADMIN does not include the ioctl() required to put /dev/net/tun in tap mode.
+    # Source : https://zerotier.atlassian.net/wiki/spaces/SD/pages/7536656/Running+ZeroTier+in+a+Docker+Container
+    # NET_ADMIN is also needed to avoid "zerotier-one: fatal error: cannot bind to local control interface port" error
+    cap_add:
+      - SYS_ADMIN
+      - NET_ADMIN
+    # Enable dbus communications for nmcli commands
+    # Source : https://github.com/balena-io/wifi-connect
+    environment:
+      DBUS_SYSTEM_BUS_ADDRESS: 'unix:path=/host/run/dbus/system_bus_socket'
