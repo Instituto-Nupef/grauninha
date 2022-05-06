@@ -202,20 +202,13 @@ services:
     command: redis-server --requirepass nextcloud
   # https://github.com/synapzlu/balena-zerotier
   zerotier:
-    # This volume is needed to make ZT configuration survive a reboot and new container version
-    volumes:
-      - ${DATA_DIR}/zerotier:/var/lib/zerotier-one
-    build: ../services/zerotier
-    # privileged is needed for ZeroTier to avoid "cannot bind to local control interface port" error
-    privileged: true
+    image: zyclonite/zerotier
+    devices:
+      - /dev/net/tun
     network_mode: host
-    # SYS_ADMIN is needed because NET_ADMIN does not include the ioctl() required to put /dev/net/tun in tap mode.
-    # Source : https://zerotier.atlassian.net/wiki/spaces/SD/pages/7536656/Running+ZeroTier+in+a+Docker+Container
-    # NET_ADMIN is also needed to avoid "zerotier-one: fatal error: cannot bind to local control interface port" error
+    volumes:
+      - '/var/lib/zerotier-one:/var/lib/zerotier-one'
     cap_add:
-      - SYS_ADMIN
       - NET_ADMIN
-    # Enable dbus communications for nmcli commands
-    # Source : https://github.com/balena-io/wifi-connect
-    environment:
-      DBUS_SYSTEM_BUS_ADDRESS: 'unix:path=/host/run/dbus/system_bus_socket'
+      - SYS_ADMIN
+
