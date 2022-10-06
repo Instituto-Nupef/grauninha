@@ -3,25 +3,27 @@ version: "2.1"
 volumes:
   pihole_config:
   dnsmasq_config:
-  proxy:
+  # proxy:
   certs:
   jellyfin-config:
   jellyfin-cache:
   media:
   jellyfin-lib:
-  calibre:
-  calibre-config:
+  # calibre:
+  # calibre-config:
   sync-config:
   sync-downloads:
   portal:
-  nextcloud:
+  # nextcloud:
   portal-config:
-  proxy_mysql:
-  nextcloud_mysql:
+  # proxy_mysql:
+  # nextcloud_mysql:
   kolibri:
   kiwix:
   browser-settings:
   zerotier:
+  pulse:
+  map:
 services:
   # https://github.com/balenablocks/wifi-connect
   # wifi-connect:
@@ -60,6 +62,7 @@ services:
       - jellyfin-cache:/cache
       - media:/media
       - jellyfin-lib:/opt/vc/lib
+      - 'pulse:/run/pulse'
     environment:
       PUID: 1000
       PGID: 1000
@@ -74,6 +77,7 @@ services:
       - 8083:80
     volumes:
       - media:/srv
+      - 'pulse:/run/pulse'
     environment:
       PGID: 1000
       PUID: 1000
@@ -115,13 +119,14 @@ services:
     ports:
       - "5053:5053/tcp"
       - "5053:5053/udp"
+  # Custom
   kolibri:
-    # https://hub.docker.com/r/treehouses/kolibri
-    image: treehouses/kolibri
+    build: services/kolibri
     ports:
       - "8084:8080"
     volumes:
       - kolibri:/root/.kolibri
+      - 'pulse:/run/pulse'
   # https://hub.docker.com/r/kiwix/kiwix-serve
   kiwix:
     build: services/kiwix
@@ -132,6 +137,7 @@ services:
     # uncomment next 4 lines to use it with local zim file in /tmp/zim
     volumes:
       - kiwix:/data
+      - 'pulse:/run/pulse'
     command: "*.zim"
     # Se quiser baixar arquivos
     # uncomment next 2 lines to use it with remote zim file
@@ -176,6 +182,7 @@ services:
       - 8086:8081
     volumes:
       - media:/downloads
+      - 'pulse:/run/pulse'
     environment:
       DOWNLOAD_DIR: /downloads/metube-video
       AUDIO_DOWNLOAD_DIR: /downloads/metube-audio
@@ -201,6 +208,13 @@ services:
       - 8088:8080
     volumes:
       - portal:/var/www
+  map:
+    build: services/map
+    restart: unless-stopped
+    ports:
+      - 8090:8080
+    volumes:
+      - map:/var/www
   # https://hub.docker.com/r/linuxserver/code-server
   # code:
   #   image: ghcr.io/linuxserver/code-server
@@ -282,12 +296,27 @@ services:
         - '35173' # Chromium debugging port (optional)
     volumes:
       - 'browser-settings:/data' # Only required if using PERSISTENT flag (see below)
+      - 'pulse:/run/pulse'
     environment:
+      PULSE_SERVER: unix:/run/pulse/pulseaudio.socket
       LAUNCH_URL: http://localhost:8088
       PERSISTENT: 1
       SHOW_CURSOR: 1
       DISPLAY_NUM: 1
       KIOSK: 0
+  # https://github.com/balenablocks/audio
+  audio:
+    image: balenablocks/audio
+    privileged: true
+    labels:
+      io.balena.features.dbus: 1  # Only required for bluetooth support
+    ports:
+      - 4317:4317                 # Only required if using PA over TCP socket
+    volumes:
+      - 'pulse:/run/pulse'
+    environment:
+      AUDIO_OUTPUT: AUTO
+      AUDIO_VOLUME: 100%
   # https://github.com/synapzlu/balena-zerotier
   # zerotier:
   #   # This volume is needed to make ZT configuration survive a reboot and new container version
@@ -329,3 +358,4 @@ services:
       - portal:/usr/src/portal
       # - nextcloud:/usr/src/nextcloud
       - kolibri:/usr/src/kolibri
+      - map:/usr/src/map
