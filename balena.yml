@@ -1,7 +1,7 @@
 name: "Grauninha"
 type: "sw.application"
 description: "Servidor comunitário grauninha, parte do projeto Grauna que também conta com o coletor de sites Grauna Memória"
-version: 0.0.1
+version: 0.0.2
 post-provisioning: >-
   ## Usage instructions
 
@@ -54,4 +54,4 @@ data:
   defaultDeviceType: "intel-nuc"
   supportedDeviceTypes:
     - "intel-nuc"
-    - "raspberrypi4-64"
+    - "genericx86-64-ext"
