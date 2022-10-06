@@ -1,231 +1,246 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Graúna Comunitário</title>
 
-    <style>
-      html,
-      body {
-        margin: 0;
-      }
-      h1 {
-        color: #000000;
-        font-family: verdana, sans-serif;
-        font-size: 1.2em;
-        padding: 20px;
-        text-align: center;
-      }
-      hr {
-        width: 80%;
-        margin: 0 auto;
-      }
-      h2 {
-        color: #000000;
-        font-family: verdana, sans-serif;
-        font-size: 0.9em;
-        max-width: 940px;
-        margin: 0 auto;
-        padding: 20px;
-        line-height: 1.5;
-        text-align: center;
-      }
-      p {
-        color: #000000;
-        font-family: verdana, sans-serif;
-        font-size: 80%;
-        padding-left: 20px;
-        padding-right: 20px;
-        text-align: center;
-        line-height: 1.5;
-      }
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Graúna Comunitário</title>
 
-      img {
-        max-width: 100%;
-        max-height: 240px;
-        height: auto;
-      }
-    </style>
+  <style>
+    html,
+    body {
+      margin: 0;
+    }
 
-    <style>
-         * {
-           box-sizing: border-box;
-        }
+    h1 {
+      color: #000000;
+      font-family: verdana, sans-serif;
+      font-size: 1.2em;
+      padding: 20px;
+      text-align: center;
+    }
 
-      #footer {
+    hr {
+      width: 80%;
+      margin: 0 auto;
+    }
+
+    h2 {
+      color: #000000;
+      font-family: verdana, sans-serif;
+      font-size: 0.9em;
+      max-width: 940px;
+      margin: 0 auto;
+      padding: 20px;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    p {
+      color: #000000;
+      font-family: verdana, sans-serif;
+      font-size: 80%;
+      padding-left: 20px;
+      padding-right: 20px;
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    img {
+      max-width: 100%;
+      max-height: 240px;
+      height: auto;
+    }
+  </style>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    #footer {
       position: fixed;
       text-align: center;
-      height: 80px:
-      left: 0;
+      height: 80px: left: 0;
       bottom: 0;
       width: 100%;
       color: #000000;
       background-color: #009999;
       padding: 2.0em 20px;
-      font-family: Verdana,sans-serif;
+      font-family: Verdana, sans-serif;
       font-size: 14px;
       line-height: 1.5;
-      }
+    }
 
-      a:link {
+    a:link {
       color: #ffffff;
       text-decoration: none;
-      }
+    }
 
-      a:visited {
+    a:visited {
       color: #ffffff;
       text-decoration: none;
-      }
+    }
 
-      a:hover {
+    a:hover {
       color: #000000;
       text-decoration: none;
-      }
+    }
 
-      a:active {
+    a:active {
       color: #000000;
       text-decoration: none;
+    }
+
+    .items {
+      display: flex;
+      flex-flow: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .items>* {
+      width: 300px;
+      padding: 35px 5px;
+    }
+
+
+    /* Essa Query adiciona um break point no layout da página */
+    /* A largura dos elementos cobre 100% do viewport quando ele cai pra 800px ou menos */
+    @media screen and (min-width: 768px) {
+      h1 {
+        font-size: 3em;
       }
 
       .items {
-        display: flex;
-        flex-flow: column;
+        /* max-width: 940px; */
+        margin: 0 auto;
+        flex-flow: row;
+        flex-wrap: wrap;
         align-items: center;
         justify-content: center;
       }
 
-      .items > * {
-        width: 300px;
-        padding: 35px 5px;
+      .items>* {
+        width: 450px;
+        padding: 35px;
       }
+    }
 
+    @media screen and (max-width: 800px) {
 
-      /* Essa Query adiciona um break point no layout da página */
-      /* A largura dos elementos cobre 100% do viewport quando ele cai pra 800px ou menos */
-      @media screen and (min-width: 768px) {
-        h1 {
-          font-size: 3em;
-        }
-        .items {
-          /* max-width: 940px; */
-          margin: 0 auto;
-          flex-flow: row;
-          flex-wrap: wrap;
-          align-items: center;
-          justify-content: center;
-        }
-        .items > * {
-          width: 450px;
-          padding: 35px;
-        }
-      }
-
-      @media screen and (max-width: 800px) {
-        .left, .main, .main2, .right {
+      .left,
+      .main,
+      .main2,
+      .right {
         width: 100%;
-        }
       }
-    </style>
-  </head>
+    }
+  </style>
+</head>
 
-  <body>
-    <h1>Sejam bem-vindos ao Graúna Comunitário</h1>
-    <hr />
-    <h2>
-      Este projeto, realizado pelo Instituto Nupef, é voltado para a memória e a
-      difusão de conteúdos de interesse público. Nele, você encontrará
-      enciclopédia e dicionário no Kiwix, materiais educacionais no Kolibri e
-      conteúdos relevantes nos campos de direitos humanos, meio ambiente,
-      cultura e saúde no Nextcloud, que também poderá armazenar conteúdos
-      produzidos pela própria comunidade. Esperamos que gostem!
-    </h2>
-    <main class="items">
-      <div>
-        <a href="http://grauna.local:8082"
-          ><img src="img/jellyfin.png" alt="Jellyfin"
-        /></a>
-      </div>
-      <div>
-        <a href="http://grauna.local:8084"
-          ><img src="img/kolibri-h.png" alt="Kolibri"
-        /></a>
-      </div>
-      <div>
-        <a href="http://grauna.local:8085"
-          ><img src="img/kiwix.png" alt="Kiwix"
-        /></a>
-      </div>
-      <div>
-        <a href="http://grauna.local:8091"
+<body>
+  <h1>Sejam bem-vindos ao Graúna Comunitário</h1>
+  <hr />
+  <h2>
+    Este projeto, realizado pelo Instituto Nupef, é voltado para a memória e a
+    difusão de conteúdos de interesse público. Nele, você encontrará
+    enciclopédia e dicionário no Kiwix, materiais educacionais no Kolibri e
+    conteúdos relevantes nos campos de direitos humanos, meio ambiente,
+    cultura e saúde no Nextcloud, que também poderá armazenar conteúdos
+    produzidos pela própria comunidade. Esperamos que gostem!
+  </h2>
+  <main class="items">
+    <div>
+      <a target="blank" href="http://grauna.local:8082"><img src="img/jellyfin.png" alt="Jellyfin" /></a>
+    </div>
+    <div>
+      <a target="blank" href="http://grauna.local:8084"><img src="img/kolibri-h.png" alt="Kolibri" /></a>
+    </div>
+    <div>
+      <a target="blank" href="http://grauna.local:8085"><img src="img/kiwix.png" alt="Kiwix" /></a>
+    </div>
+    <!-- <div>
+        <a target="blank" href="http://grauna.local:8091"
           ><img style="height: 170px;" src="img/calibre.png" alt="Calibre"
         /></a>
       </div>
       <div>
-        <a href="http://grauna.local:8087"
+        <a target="blank" href="http://grauna.local:8087"
           ><img src="img/nextcloud.png" alt="Nuvem Social"
         /></a>
-      </div>
-      <div>
-        <a href="http://grauna.local:8086"
-          ><img src="img/metube.png" alt="MeTube"
-        /></a>
-      </div>
-      <div>
-        <a href="http://grauna.local:8083"
-          ><img src="img/filebrowser.png" alt="Filebrowser"
-        /></a>
-      </div>
-      <div>
-        <a href="http://grauna.local:8090"
+      </div> -->
+    <div>
+      <a target="blank" href="http://grauna.local:8086"><img src="img/metube.png" alt="MeTube" /></a>
+    </div>
+    <div>
+      <a target="blank" href="http://grauna.local:8083"><img src="img/filebrowser.png" alt="Filebrowser" /></a>
+    </div>
+    <!-- <div>
+        <a target="blank" href="http://grauna.local:8090"
           ><img src="img/vscode.png" alt="VSCode"
         /></a>
       </div>
       <div>
-        <a href="http://grauna.local:8081"
+        <a target="blank" href="http://grauna.local:8081"
           ><img src="img/npm.png" alt="Proxy Manager"
         /></a>
       </div>
       <div>
-        <a href="http://grauna.local:8089"
+        <a target="blank" href="http://grauna.local:8089"
           ><img src="img/pihole.png" alt="Pihole"
         /></a>
       </div>
       <div>
-        <a href="http://grauna.local:8092"
+        <a target="blank" href="http://grauna.local:8092"
           ><img src="img/resilio_sync.png" alt="Resilio Sync"
         /></a>
-      </div>
-      <div>
-        <!-- <a href="http://local.grauna.org.br:......">--><img
+      </div> -->
+    <!-- <div>
+        <img
           src="img/grauna-memoria.png"
           alt="Graúna Memória"
-        /><!--</a>-->
-      </div>
-    </main>
+          >
+      </div> -->
+  </main>
 
-    <p>&nbsp;</p>
-    <p>&nbsp;</p>
-    <p>
-      Este projeto tem o apoio da Embaixada Britânica/Foreign, Commonwealth &
-      Development Office (FCDO) e da Fundação Ford.
-    </p>
-    <p>
-      <img
-        src="img/G_Partnership_Brazil.png"
-        alt="Great for Partnership Brazil"
-      />
-      <img src="img/FordFoundation.png" alt="Ford Foundation" />
-    </p>
-    <br /><br /><br /><br /><br /><br /><br />
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>
+    Este projeto tem o apoio da Embaixada Britânica/Foreign, Commonwealth &
+    Development Office (FCDO) e da Fundação Ford.
+  </p>
+  <p>
+    <img src="img/G_Partnership_Brazil.png" alt="Great for Partnership Brazil" />
+    <img src="img/FordFoundation.png" alt="Ford Foundation" />
+  </p>
+  <br /><br /><br /><br /><br /><br /><br />
 
-    <div id="footer">
-      contato.
-      <a href="mailto:suportecomunitario@nupef.org.br"
-        >suportecomunitario@nupef.org.br</a
-      ><br />
-      web site.
-      <a href="https://nupef.org.br" target="_blank">https://nupef.org.br</a>
-    </div>
-  </body>
+  <div id="footer">
+    contato.
+    <a target="blank" href="mailto:suportecomunitario@nupef.org.br">suportecomunitario@nupef.org.br</a><br />
+    web site.
+    <a target="blank" href="https://nupef.org.br" target="_blank">https://nupef.org.br</a>
+  </div>
+</body>
+
 </html>
+<script>
+  window.onload = function () {
+    console.log('Começando Grauninha')
+    const hostname = window.location.hostname
+    console.log('hostname', hostname)
+    if (hostname === 'localhost') {
+      var anchors = document.getElementsByTagName("a");
+
+      for (var i = 0; i < anchors.length; i++) {
+        const port = anchors[i].href.split(":")[2]
+        anchors[i].href = "http://localhost:" + port
+      }
+    }
+
+  }
+
+
+
+</script>
