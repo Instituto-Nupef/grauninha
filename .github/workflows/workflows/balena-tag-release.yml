@@ -1,0 +1,116 @@
+name: Balena Release
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+jobs:
+  balena-deploy:
+    outputs:
+      github_tag: ${{ steps.deploy.outputs.github_tag }}
+      balena_tag: ${{ steps.deploy.outputs.balena_tag }}
+    strategy:
+      matrix:
+        fleet_var: ['_aarch64', '_amd64']
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Deploy Balena image
+        id: deploy
+        uses: ./.github/actions/deploy-balena-image
+        with:
+          balena_token: ${{ secrets.BALENA_TOKEN }}
+          balena_fleet: "${{ secrets.BALENA_FLEET }}${{ matrix.fleet_var }}"
+          github_ref: ${{ github.ref }}
+          github_head_ref: ${{ github.head_ref }}
+          release_tag: release
+          balena_draft: false
+
+  balena-build-images:
+    strategy:
+      matrix:
+        board: [pi3, pi4, generic_aarch64, nuc, generic_amd64]
+        include:
+          - board: pi3
+            fleet_var: _aarch64
+            image: raspberrypi3-64
+          - board: pi4
+            fleet_var: _aarch64
+            image: raspberrypi4-64
+          - board: rockpi4
+            fleet_var: _aarch64
+            image: rockpi-4b-rk3399
+          - board: rockpro64
+            fleet_var: _aarch64
+            image: rockpro64
+          - board: generic_aarch64
+            fleet_var: _aarch64
+            image: generic-aarch64
+          - board: nuc
+            fleet_var: _amd64
+            image: intel-nuc
+          - board: generic_amd64
+            fleet_var: _amd64
+            image: generic-amd64
+    runs-on: ubuntu-latest
+    needs: [balena-deploy]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Pre-load Configure Compress Upload
+        uses: ./.github/actions/create-balena-image
+        with:
+          balena_token: ${{ secrets.BALENA_TOKEN }}
+          balena_fleet: "${{ secrets.BALENA_FLEET }}${{ matrix.fleet_var }}"
+          balena_device: ${{ matrix.image }}
+          tag: ${{ needs.balena-deploy.outputs.github_tag }}
+
+  github-release:
+    runs-on: ubuntu-latest
+    needs: [balena-deploy, balena-build-images]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Create Github pre-release
+        uses: ./.github/actions/release-images
+        with:
+          pre-release: false
+          repo_token: "${{ secrets.PAT }}"
+
+#TODO: Download and inject content into the image
+      # - name: Mount Image
+      #   id: mount-image
+      #   uses: damianperera/mount-image-action@v1
+      #   with:
+      #     imagePath: "${{matrix.image}}.img"
+      #     mountPoint: "/mnt/${{matrix.image}}"
+
+      # - name: Download content zip
+      #   run: |
+      #     sudo cp config/* ${{ steps.mount-image.outputs.rootMountLocation }}/etc/config/
+
+      # - name: Unmount image
+      #   uses: damianperera/unmount-image-action@v1
+      #   with:
+      #     imagePath: "${{matrix.image}}.img"
+      #     bootDeviceMapper: ${{ steps.mount-image.outputs.bootDeviceMapper }}
+      #     rootDeviceMapper: ${{ steps.mount-image.outputs.rootDeviceMapper }}
+
+#TODO: Cleanup
+      # - name: Delete workflow runs
+      #   uses: GitRML/delete-workflow-runs@main
+      #   with:
+      #     retain_days: 1
+      #     keep_minimum_runs: 3
+
+      # - name: Remove old Releases
+      #   uses: dev-drprasad/delete-older-releases@v0.1.0
+      #   if: env.UPLOAD_RELEASE == 'true' && !cancelled()
+      #   with:
+      #     keep_latest: 3
+      #     delete_tags: true
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
