@@ -1,5 +1,7 @@
 # Grauninha
 
+[![Balena Release](https://github.com/Instituto-Nupef/grauninha/actions/workflows/balena-tag-release.yml/badge.svg)](https://github.com/Instituto-Nupef/grauninha/actions/workflows/balena-tag-release.yml)
+
 Servidor comunitário Grauninha, parte do projeto Grauna que também conta com o coletor de sites Grauna Memória.
 ## Getting Started
 
