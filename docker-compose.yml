@@ -14,10 +14,10 @@ volumes:
   sync-config:
   sync-downloads:
   portal:
-  # nextcloud:
+  nextcloud:
   portal-config:
   # proxy_mysql:
-  # nextcloud_mysql:
+  nextcloud_mysql:
   kolibri:
   kiwix:
   browser-settings:
@@ -149,32 +149,32 @@ services:
     #   DOWNLOAD: "https://download.kiwix.org/zim/wikinews/wikinews_pt_all_maxi_2022-01.zim"
     #   DOWNLOAD: "https://download.kiwix.org/zim/wikiversity/wikiversity_pt_all_maxi_2022-01.zim"
   # https://hub.docker.com/_/nextcloud/
-  # nextcloud:
-  #   build: services/nextcloud
-  #   privileged: true
-  #   volumes:
-  #     - nextcloud:/var/www/html
-  #   environment:
-  #     MYSQL_HOST: nextcloud_db
-  #     MYSQL_DATABASE: nextcloud
-  #     MYSQL_USER: nextcloud
-  #     MYSQL_PASSWORD: nextcloud
-  #     REDIS_HOST: redis
-  #     REDIS_HOST_PASSWORD: nextcloud
-  #     NEXTCLOUD_TRUSTED_DOMAINS: "grauna.local *.balena-devices.com"
-  #   depends_on:
-  #     - nextcloud_db
-  #     - redis
+  nextcloud:
+    build: services/nextcloud
+    privileged: true
+    volumes:
+      - nextcloud:/var/www/html
+    environment:
+      MYSQL_HOST: nextcloud_db
+      MYSQL_DATABASE: nextcloud
+      MYSQL_USER: nextcloud
+      MYSQL_PASSWORD: nextcloud
+      REDIS_HOST: redis
+      REDIS_HOST_PASSWORD: nextcloud
+      NEXTCLOUD_TRUSTED_DOMAINS: "grauna.local *.balena-devices.com"
+    depends_on:
+      - nextcloud_db
+      - redis
 
   # https://hub.docker.com/_/nginx/
-  # nextcloud-nginx:
-  #   build: services/nginx
-  #   ports:
-  #     - 8087:80/tcp
-  #   volumes:
-  #     - nextcloud:/var/www/html:ro
-  #   depends_on:
-  #     - nextcloud
+  nextcloud-nginx:
+    build: services/nginx
+    ports:
+      - 8087:80/tcp
+    volumes:
+      - nextcloud:/var/www/html:ro
+    depends_on:
+      - nextcloud
   # # https://hub.docker.com/r/alexta69/metube
   metube:
     image: alexta69/metube
@@ -208,13 +208,13 @@ services:
       - 80:8080
     volumes:
       - portal:/var/www
-  map:
-    build: services/map
-    restart: unless-stopped
-    ports:
-      - 8090:8080
-    volumes:
-      - map:/var/www
+  # map:
+  #   build: services/map
+  #   restart: unless-stopped
+  #   ports:
+  #     - 8090:8080
+  #   volumes:
+  #     - map:/var/www
   # https://hub.docker.com/r/linuxserver/code-server
   # code:
   #   image: ghcr.io/linuxserver/code-server
@@ -259,33 +259,33 @@ services:
   #     timeout: 30s
   #     retries: 3
   # https://hub.docker.com/r/yobasystems/alpine-mariadb
-  # nextcloud_db:
-  #   image: yobasystems/alpine-mariadb:10.5.11
-  #   volumes:
-  #     - nextcloud_mysql:/var/lib/mysql
-  #   environment:
-  #     MYSQL_DATABASE: nextcloud
-  #     MYSQL_USER: nextcloud
-  #     MYSQL_PASSWORD: nextcloud
-  #     MYSQL_ROOT_PASSWORD: balena
-  #   command:
-  #     - --transaction-isolation=READ-COMMITTED
-  #     - --character-set-server=utf8mb4
-  #     - --collation-server=utf8mb4_unicode_ci
-  #     - --max-connections=512
-  #     - --innodb-rollback-on-timeout=OFF
-  #     - --innodb-lock-wait-timeout=50
-  #     - --binlog-format=ROW
-  #   healthcheck:
-  #     test: mysqldump -uroot -p$MYSQL_ROOT_PASSWORD --all-databases --result-file=/var/lib/mysql/hourly-backup.sql || exit 0
-  #     interval: 1h
-  #     timeout: 30s
-  #     retries: 3
+  nextcloud_db:
+    image: yobasystems/alpine-mariadb:10.5.11
+    volumes:
+      - nextcloud_mysql:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: nextcloud
+      MYSQL_USER: nextcloud
+      MYSQL_PASSWORD: nextcloud
+      MYSQL_ROOT_PASSWORD: balena
+    command:
+      - --transaction-isolation=READ-COMMITTED
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --max-connections=512
+      - --innodb-rollback-on-timeout=OFF
+      - --innodb-lock-wait-timeout=50
+      - --binlog-format=ROW
+    healthcheck:
+      test: mysqldump -uroot -p$MYSQL_ROOT_PASSWORD --all-databases --result-file=/var/lib/mysql/hourly-backup.sql || exit 0
+      interval: 1h
+      timeout: 30s
+      retries: 3
 
   # https://hub.docker.com/_/redis
-  # redis:
-  #   image: redis:6.0.8-alpine
-  #   command: redis-server --requirepass nextcloud
+  redis:
+    image: redis:6.0.8-alpine
+    command: redis-server --requirepass nextcloud
   # https://github.com/balenablocks/browser
   browser:
     image: balenablocks/browser
@@ -356,6 +356,6 @@ services:
       - kiwix:/usr/src/kiwix
       # - calibre:/usr/src/calibre
       - portal:/usr/src/portal
-      # - nextcloud:/usr/src/nextcloud
+      - nextcloud:/usr/src/nextcloud
       - kolibri:/usr/src/kolibri
       - map:/usr/src/map
