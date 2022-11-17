@@ -16,7 +16,7 @@ volumes:
   portal-config:
   # proxy_mysql:
   # nextcloud_mysql:
-  #kolibri:
+  kolibri:
   #kiwix:
   #browser-settings:
   #pulse:
@@ -117,13 +117,13 @@ services:
   #    - "5053:5053/tcp"
   #    - "5053:5053/udp"
   ## Custom
-  #kolibri:
-  #  build: services/kolibri
-  #  ports:
-  #    - "8084:8080"
-  #  volumes:
-  #    - kolibri:/root/.kolibri
-  #    - 'pulse:/run/pulse'
+  kolibri:
+    build: services/kolibri
+    ports:
+      - "8084:8080"
+    volumes:
+      - kolibri:/root/.kolibri
+      - 'pulse:/run/pulse'
   ## https://hub.docker.com/r/kiwix/kiwix-serve
   #kiwix:
   #  build: services/kiwix
@@ -354,5 +354,5 @@ services:
       # - calibre:/usr/src/calibre
       - portal:/usr/src/portal
       # - nextcloud:/usr/src/nextcloud
-      # - kolibri:/usr/src/kolibri
+      - kolibri:/usr/src/kolibri
       # - map:/usr/src/map
