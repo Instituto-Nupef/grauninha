@@ -24,6 +24,7 @@ volumes:
   zerotier:
   pulse:
   map:
+  mapeo-libremesh:
 services:
   # https://github.com/balenablocks/wifi-connect
   # wifi-connect:
@@ -49,6 +50,12 @@ services:
   #     - certs:/etc/letsencrypt
   #   depends_on:
   #     - proxy_db
+  # https://hub.docker.com/r/communityfirst/mapeo-bridge
+  mapeo-libremesh:
+    image: communityfirst/mapeo-bridge:libremesh
+    network_mode: host
+    volumes:
+      - mapeo-libremesh:/root/.mapeo-bridge
   jellyfin:
     image: jellyfin/jellyfin
     restart: unless-stopped

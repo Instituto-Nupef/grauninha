@@ -1,7 +1,7 @@
 name: "Grauninha"
 type: "sw.application"
 description: "Servidor comunitário grauninha, parte do projeto Grauna que também conta com o coletor de sites Grauna Memória"
-version: 0.0.2
+version: 0.0.3
 post-provisioning: >-
   ## Usage instructions
 
@@ -55,3 +55,4 @@ data:
   supportedDeviceTypes:
     - "intel-nuc"
     - "genericx86-64-ext"
+    - "generic-amd64"
