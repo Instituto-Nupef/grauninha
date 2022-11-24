@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Deploy Balena image
         id: deploy
@@ -56,7 +56,7 @@ jobs:
     needs: [balena-deploy]
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Pre-load Configure Compress Upload
         uses: ./.github/actions/create-balena-image
@@ -72,7 +72,7 @@ jobs:
     needs: [balena-deploy, balena-build-images]
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Create Github pre-release
         uses: ./.github/actions/release-images
