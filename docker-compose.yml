@@ -21,7 +21,13 @@ volumes:
   #browser-settings:
   # pulse:
   # map:
+  mapeo-libremesh:
 services:
+  mapeo-libremesh:
+    image: communityfirst/mapeo-bridge:libremesh
+    network_mode: host
+    volumes:
+      - mapeo-libremesh:/root/.mapeo-bridge
   # https://github.com/balenablocks/wifi-connect
   # wifi-connect:
   #   build: services/wifi-connect
