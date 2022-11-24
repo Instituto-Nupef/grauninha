@@ -5,8 +5,7 @@ volumes:
   jellyfin-cache:
   jellyfin-lib:
   media:
-  filebrowser-db:
-  filebrowser-json:
+  filebrowser-data:
   portal:
   kolibri:
   kiwix:
@@ -47,8 +46,7 @@ services:
     volumes:
       - media:/srv
       - 'pulse:/run/pulse'
-      - filebrowser-db:/database.db
-      - filebrowser-json:/.filebrowser.json
+      - filebrowser-data:/
     environment:
       PGID: 1000
       PUID: 1000
