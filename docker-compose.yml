@@ -12,14 +12,14 @@ volumes:
   # calibre:
   # calibre-config:
   portal:
-  # nextcloud:
+  nextcloud:
   portal-config:
   # proxy_mysql:
   # nextcloud_mysql:
   kolibri:
-  #kiwix:
+  kiwix:
   #browser-settings:
-  #pulse:
+  # pulse:
   # map:
 services:
   # https://github.com/balenablocks/wifi-connect
@@ -123,19 +123,17 @@ services:
       - "8084:8080"
     volumes:
       - kolibri:/root/.kolibri
-      - 'pulse:/run/pulse'
+   #   - 'pulse:/run/pulse'
   ## https://hub.docker.com/r/kiwix/kiwix-serve
-  #kiwix:
-  #  build: services/kiwix
-  #  restart: unless-stopped
-  #  ports:
-  #    - "8085:80"
+  kiwix:
+    build: services/kiwix
+    restart: unless-stopped
+    ports:
+      - "8085:80"
   #  # Adicionar manual em: resin-data/docker/volumes/<APP ID>_<VOLUME NAME>/_<CONTAINER DIRECTORY>
-  #  # uncomment next 4 lines to use it with local zim file in /tmp/zim
-  #  volumes:
-  #    - kiwix:/data
-  #    - 'pulse:/run/pulse'
-  #  command: "*.zim"
+    volumes:
+      - kiwix:/data
+    command: "*.zim"
     # Se quiser baixar arquivos
     # uncomment next 2 lines to use it with remote zim file
     # environment:
@@ -144,34 +142,22 @@ services:
     #   DOWNLOAD: "https://download.kiwix.org/zim/wikisource/wikisource_pt_all_maxi_2022-01.zim"
     #   DOWNLOAD: "https://download.kiwix.org/zim/wiktionary/wiktionary_pt_all_maxi_2022-01.zim"
     #   DOWNLOAD: "https://download.kiwix.org/zim/wikinews/wikinews_pt_all_maxi_2022-01.zim"
-    #   DOWNLOAD: "https://download.kiwix.org/zim/wikiversity/wikiversity_pt_all_maxi_2022-01.zim"
-  # https://hub.docker.com/_/nextcloud/
-  # nextcloud:
-  #   build: services/nextcloud
-  #   privileged: true
-  #   volumes:
-  #     - nextcloud:/var/www/html
-  #   environment:
-  #     MYSQL_HOST: nextcloud_db
-  #     MYSQL_DATABASE: nextcloud
-  #     MYSQL_USER: nextcloud
-  #     MYSQL_PASSWORD: nextcloud
-  #     REDIS_HOST: redis
-  #     REDIS_HOST_PASSWORD: nextcloud
-  #     NEXTCLOUD_TRUSTED_DOMAINS: "grauna.local *.balena-devices.com"
-  #   depends_on:
-  #     - nextcloud_db
-  #     - redis
 
-  # https://hub.docker.com/_/nginx/
-  # nextcloud-nginx:
-  #   build: services/nginx
-  #   ports:
-  #     - 8087:80/tcp
-  #   volumes:
-  #     - nextcloud:/var/www/html:ro
-  #   depends_on:
-  #     - nextcloud
+   #   DOWNLOAD: "https://download.kiwix.org/zim/wikiversity/wikiversity_pt_all_maxi_2022-01.zim"
+  # https://hub.docker.com/_/nextcloud/
+
+  nextcloud:
+    image: nextcloud
+    privileged: true
+    ports:
+      - '8087:80'
+    volumes:
+       - nextcloud:/var/www/html
+   #   - nextcloud:/var/www/html/data 
+   #     NEXTCLOUD_TRUSTED_DOMAINS: "grauna.local *.balena-devices.com"
+    restart: unless-stopped   
+  
+  
   # # https://hub.docker.com/r/alexta69/metube
   # metube:
   #   image: alexta69/metube
@@ -350,9 +336,10 @@ services:
     volumes:
       #- media:/usr/src/media
       #- jellyfin-config:/usr/src/jellyfin-config
-      #- kiwix:/usr/src/kiwix
+      - kiwix:/usr/src/kiwix
       # - calibre:/usr/src/calibre
       - portal:/usr/src/portal
-      # - nextcloud:/usr/src/nextcloud
+      - nextcloud:/usr/src/nextcloud
       - kolibri:/usr/src/kolibri
       # - map:/usr/src/map
+
