@@ -1,8 +1,8 @@
 version: "2.1"
 
 volumes:
-  pihole_config:
-  dnsmasq_config:
+  # pihole_config:
+  # dnsmasq_config:
   # proxy:
   # certs:
   jellyfin-config:
@@ -104,28 +104,28 @@ services:
   #     - 55555:55555
   #   restart: unless-stopped
   # https://hub.docker.com/r/pihole/pihole
-  pihole:
-    build: services/pihole
-    network_mode: host
-    privileged: true
-    volumes:
-      - "pihole_config:/etc/pihole"
-      - "dnsmasq_config:/etc/dnsmasq.d"
-    dns:
-      - "127.0.0.1"
-      - "1.1.1.1"
-    environment:
-      WEB_PORT: 8089
-      WEBPASSWORD: grauna
-    labels:
-      io.balena.features.dbus: "1"
+  # pihole:
+  #   build: services/pihole
+  #   network_mode: host
+  #   privileged: true
+  #   volumes:
+  #     - "pihole_config:/etc/pihole"
+  #     - "dnsmasq_config:/etc/dnsmasq.d"
+  #   dns:
+  #     - "127.0.0.1"
+  #     - "1.1.1.1"
+  #   environment:
+  #     WEB_PORT: 8089
+  #     WEBPASSWORD: grauna
+  #   labels:
+  #     io.balena.features.dbus: "1"
   # https://github.com/klutchell/unbound-dnscrypt
-  unbound:
-    build: services/unbound
-    privileged: true
-    ports:
-      - "5053:5053/tcp"
-      - "5053:5053/udp"
+  # unbound:
+  #   build: services/unbound
+  #   privileged: true
+  #   ports:
+  #     - "5053:5053/tcp"
+  #     - "5053:5053/udp"
   # Custom
   kolibri:
     build: services/kolibri
