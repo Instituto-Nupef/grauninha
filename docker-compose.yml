@@ -75,6 +75,8 @@ services:
       - media:/downloads
       - 'pulse:/run/pulse'
     environment:
+      UID: 1
+      GID: 1
       DOWNLOAD_DIR: /downloads/metube-video
       AUDIO_DOWNLOAD_DIR: /downloads/metube-audio
   # https://hub.docker.com/r/communityfirst/live-server
