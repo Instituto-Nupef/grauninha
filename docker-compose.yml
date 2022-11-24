@@ -5,7 +5,8 @@ volumes:
   jellyfin-cache:
   jellyfin-lib:
   media:
-  filebrowser-data:
+  filebrowser-db:
+  filebrowser-config:
   portal:
   kolibri:
   kiwix:
@@ -40,13 +41,14 @@ services:
       JELLYFIN_PublishedServerUrl: guarani.io
   # https://hub.docker.com/r/filebrowser/filebrowser
   filebrowser:
-    image: filebrowser/filebrowser
+    image: filebrowser/filebrowser:s6
     ports:
       - 8083:80
     volumes:
       - media:/srv
       - 'pulse:/run/pulse'
-      - filebrowser-data:/
+      - filebrowser-db:/database
+      - filebrowser-config:/config
     environment:
       PGID: 1000
       PUID: 1000
