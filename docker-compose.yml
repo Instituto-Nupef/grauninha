@@ -1,29 +1,26 @@
 version: "2.1"
 
 volumes:
-  pihole_config:
-  dnsmasq_config:
+  #  pihole_config:
+  # dnsmasq_config:
   # proxy:
   # certs:
-  jellyfin-config:
-  jellyfin-cache:
-  media:
-  jellyfin-lib:
+  # jellyfin-config:
+  # jellyfin-cache:
+  # media:
+  # jellyfin-lib:
   # calibre:
   # calibre-config:
-  sync-config:
-  sync-downloads:
   portal:
-  # nextcloud:
+  nextcloud:
   portal-config:
   # proxy_mysql:
   # nextcloud_mysql:
   kolibri:
   kiwix:
-  browser-settings:
-  zerotier:
-  pulse:
-  map:
+  #browser-settings:
+  # pulse:
+  # map:
 services:
   # https://github.com/balenablocks/wifi-connect
   # wifi-connect:
@@ -49,39 +46,39 @@ services:
   #     - certs:/etc/letsencrypt
   #   depends_on:
   #     - proxy_db
-  jellyfin:
-    image: jellyfin/jellyfin
-    restart: unless-stopped
-    ports:
-      - 8082:8096
-      - 8920:8920 #optional
-      - 7359:7359/udp #optional
-      - 1900:1900/udp #optional
-    volumes:
-      - jellyfin-config:/config
-      - jellyfin-cache:/cache
-      - media:/media
-      - jellyfin-lib:/opt/vc/lib
-      - 'pulse:/run/pulse'
-    environment:
-      PUID: 1000
-      PGID: 1000
-      JELLYFIN_PublishedServerUrl: guarani.io
+  #  jellyfin:
+  #  image: jellyfin/jellyfin
+  #  restart: unless-stopped
+  #  ports:
+  #    - 8082:8096
+  #    - 8920:8920 #optional
+  #    - 7359:7359/udp #optional
+  #    - 1900:1900/udp #optional
+ # volumes:
+ #    - jellyfin-config:/config
+ #    - jellyfin-cache:/cache
+ #     - media:/media
+ #   - jellyfin-lib:/opt/vc/lib
+ #     - 'pulse:/run/pulse'
+ #   environment:
+ #     PUID: 1000
+ #     PGID: 1000
+ #     JELLYFIN_PublishedServerUrl: guarani.io
     #devices:
     #- /dev/vchiq:/dev/vchiq #hardware acceleration for Rasp 3 e 4
     # - /dev/vcsm:/dev/vcsm #hardware acceleration for Rasp 3
   # https://hub.docker.com/r/filebrowser/filebrowser
-  filebrowser:
-    image: filebrowser/filebrowser
-    ports:
-      - 8083:80
-    volumes:
-      - media:/srv
-      - 'pulse:/run/pulse'
-    environment:
-      PGID: 1000
-      PUID: 1000
-    command: -- c
+  #  filebrowser:
+  #  image: filebrowser/filebrowser
+  #  ports:
+  #    - 8083:80
+  #  volumes:
+  #    - media:/srv
+  #    - 'pulse:/run/pulse'
+  #  environment:
+  #    PGID: 1000
+  #    PUID: 1000
+#    command: -- c
   # resilio-sync:
   #   image: lscr.io/linuxserver/resilio-sync
   #   environment:
@@ -97,47 +94,45 @@ services:
   #     - 55555:55555
   #   restart: unless-stopped
   # https://hub.docker.com/r/pihole/pihole
-  pihole:
-    build: services/pihole
-    network_mode: host
-    privileged: true
-    volumes:
-      - "pihole_config:/etc/pihole"
-      - "dnsmasq_config:/etc/dnsmasq.d"
-    dns:
-      - "127.0.0.1"
-      - "1.1.1.1"
-    environment:
-      WEB_PORT: 8089
-      WEBPASSWORD: grauna
-    labels:
-      io.balena.features.dbus: "1"
+  #  pihole:
+  #  build: services/pihole
+  #  network_mode: host
+  #  privileged: true
+  #  volumes:
+  #    - "pihole_config:/etc/pihole"
+  #    - "dnsmasq_config:/etc/dnsmasq.d"
+  #  dns:
+  #    - "127.0.0.1"
+  #    - "1.1.1.1"
+  #  environment:
+  #    WEB_PORT: 8089
+  #    WEBPASSWORD: grauna
+  #  labels:
+  #    io.balena.features.dbus: "1"
   # https://github.com/klutchell/unbound-dnscrypt
-  unbound:
-    build: services/unbound
-    privileged: true
-    ports:
-      - "5053:5053/tcp"
-      - "5053:5053/udp"
-  # Custom
+  #unbound:
+  #  build: services/unbound
+  #  privileged: true
+  #  ports:
+  #    - "5053:5053/tcp"
+  #    - "5053:5053/udp"
+  ## Custom
   kolibri:
     build: services/kolibri
     ports:
       - "8084:8080"
     volumes:
       - kolibri:/root/.kolibri
-      - 'pulse:/run/pulse'
-  # https://hub.docker.com/r/kiwix/kiwix-serve
+   #   - 'pulse:/run/pulse'
+  ## https://hub.docker.com/r/kiwix/kiwix-serve
   kiwix:
     build: services/kiwix
     restart: unless-stopped
     ports:
       - "8085:80"
-    # Adicionar manual em: resin-data/docker/volumes/<APP ID>_<VOLUME NAME>/_<CONTAINER DIRECTORY>
-    # uncomment next 4 lines to use it with local zim file in /tmp/zim
+  #  # Adicionar manual em: resin-data/docker/volumes/<APP ID>_<VOLUME NAME>/_<CONTAINER DIRECTORY>
     volumes:
       - kiwix:/data
-      - 'pulse:/run/pulse'
     command: "*.zim"
     # Se quiser baixar arquivos
     # uncomment next 2 lines to use it with remote zim file
@@ -147,45 +142,33 @@ services:
     #   DOWNLOAD: "https://download.kiwix.org/zim/wikisource/wikisource_pt_all_maxi_2022-01.zim"
     #   DOWNLOAD: "https://download.kiwix.org/zim/wiktionary/wiktionary_pt_all_maxi_2022-01.zim"
     #   DOWNLOAD: "https://download.kiwix.org/zim/wikinews/wikinews_pt_all_maxi_2022-01.zim"
-    #   DOWNLOAD: "https://download.kiwix.org/zim/wikiversity/wikiversity_pt_all_maxi_2022-01.zim"
-  # https://hub.docker.com/_/nextcloud/
-  # nextcloud:
-  #   build: services/nextcloud
-  #   privileged: true
-  #   volumes:
-  #     - nextcloud:/var/www/html
-  #   environment:
-  #     MYSQL_HOST: nextcloud_db
-  #     MYSQL_DATABASE: nextcloud
-  #     MYSQL_USER: nextcloud
-  #     MYSQL_PASSWORD: nextcloud
-  #     REDIS_HOST: redis
-  #     REDIS_HOST_PASSWORD: nextcloud
-  #     NEXTCLOUD_TRUSTED_DOMAINS: "grauna.local *.balena-devices.com"
-  #   depends_on:
-  #     - nextcloud_db
-  #     - redis
 
-  # https://hub.docker.com/_/nginx/
-  # nextcloud-nginx:
-  #   build: services/nginx
-  #   ports:
-  #     - 8087:80/tcp
-  #   volumes:
-  #     - nextcloud:/var/www/html:ro
-  #   depends_on:
-  #     - nextcloud
-  # # https://hub.docker.com/r/alexta69/metube
-  metube:
-    image: alexta69/metube
+   #   DOWNLOAD: "https://download.kiwix.org/zim/wikiversity/wikiversity_pt_all_maxi_2022-01.zim"
+  # https://hub.docker.com/_/nextcloud/
+
+  nextcloud:
+    image: nextcloud
+    privileged: true
     ports:
-      - 8086:8081
+      - '8087:80'
     volumes:
-      - media:/downloads
-      - 'pulse:/run/pulse'
-    environment:
-      DOWNLOAD_DIR: /downloads/metube-video
-      AUDIO_DOWNLOAD_DIR: /downloads/metube-audio
+       - nextcloud:/var/www/html
+   #   - nextcloud:/var/www/html/data 
+   #     NEXTCLOUD_TRUSTED_DOMAINS: "grauna.local *.balena-devices.com"
+    restart: unless-stopped   
+  
+  
+  # # https://hub.docker.com/r/alexta69/metube
+  # metube:
+  #   image: alexta69/metube
+  #   ports:
+  #     - 8086:8081
+  #   volumes:
+  #     - media:/downloads
+  #     - 'pulse:/run/pulse'
+  #   environment:
+  #     DOWNLOAD_DIR: /downloads/metube-video
+  #     AUDIO_DOWNLOAD_DIR: /downloads/metube-audio
   # https://hub.docker.com/r/linuxserver/calibre-web/
   # calibre:
   #   image: linuxserver/calibre-web
@@ -208,14 +191,14 @@ services:
       - 80:8080
     volumes:
       - portal:/var/www
-  map:
-    build: services/map
-    restart: unless-stopped
-    ports:
-      - 8090:8080
-    volumes:
-      - map:/var/www
-  # https://hub.docker.com/r/linuxserver/code-server
+    # map:
+    #   build: services/map
+    #   restart: unless-stopped
+    #   ports:
+    #     - 8090:8080
+    #   volumes:
+    #     - map:/var/www
+    # # https://hub.docker.com/r/linuxserver/code-server
   # code:
   #   image: ghcr.io/linuxserver/code-server
   #   ports:
@@ -287,37 +270,37 @@ services:
   #   image: redis:6.0.8-alpine
   #   command: redis-server --requirepass nextcloud
   # https://github.com/balenablocks/browser
-  browser:
-    image: balenablocks/browser
-    privileged: true # required for UDEV to find plugged in peripherals such as a USB mouse
-    network_mode: host
-    ports:
-        - '5011' # management API (optional)
-        - '35173' # Chromium debugging port (optional)
-    volumes:
-      - 'browser-settings:/data' # Only required if using PERSISTENT flag (see below)
-      - 'pulse:/run/pulse'
-    environment:
-      PULSE_SERVER: unix:/run/pulse/pulseaudio.socket
-      LAUNCH_URL: http://localhost
-      PERSISTENT: 1
-      SHOW_CURSOR: 1
-      DISPLAY_NUM: 1
-      KIOSK: 0
-  # https://github.com/balenablocks/audio
-  audio:
-    image: balenablocks/audio
-    privileged: true
-    labels:
-      io.balena.features.dbus: 1  # Only required for bluetooth support
-    ports:
-      - 4317:4317                 # Only required if using PA over TCP socket
-    volumes:
-      - 'pulse:/run/pulse'
-    environment:
-      AUDIO_OUTPUT: AUTO
-      AUDIO_VOLUME: 100%
-  # https://github.com/synapzlu/balena-zerotier
+  # browser:
+  #   image: balenablocks/browser
+  #   privileged: true # required for UDEV to find plugged in peripherals such as a USB mouse
+  #   network_mode: host
+  #   ports:
+  #       - '5011' # management API (optional)
+  #       - '35173' # Chromium debugging port (optional)
+  #   volumes:
+  #     - 'browser-settings:/data' # Only required if using PERSISTENT flag (see below)
+  #     - 'pulse:/run/pulse'
+  #   environment:
+  #     PULSE_SERVER: unix:/run/pulse/pulseaudio.socket
+  #     LAUNCH_URL: http://localhost
+  #     PERSISTENT: 1
+  #     SHOW_CURSOR: 1
+  #     DISPLAY_NUM: 1
+  #     KIOSK: 0
+  # # https://github.com/balenablocks/audio
+  # audio:
+  #   image: balenablocks/audio
+  #   privileged: true
+  #   labels:
+  #     io.balena.features.dbus: 1  # Only required for bluetooth support
+  #   ports:
+  #     - 4317:4317                 # Only required if using PA over TCP socket
+  #   volumes:
+  #     - 'pulse:/run/pulse'
+  #   environment:
+  #     AUDIO_OUTPUT: AUTO
+  #     AUDIO_VOLUME: 100%
+  # # https://github.com/synapzlu/balena-zerotier
   # zerotier:
   #   # This volume is needed to make ZT configuration survive a reboot and new container version
   #   volumes:
@@ -351,11 +334,12 @@ services:
     build: services/storage
     privileged: true
     volumes:
-      - media:/usr/src/media
-      - jellyfin-config:/usr/src/jellyfin-config
+      #- media:/usr/src/media
+      #- jellyfin-config:/usr/src/jellyfin-config
       - kiwix:/usr/src/kiwix
       # - calibre:/usr/src/calibre
       - portal:/usr/src/portal
-      # - nextcloud:/usr/src/nextcloud
+      - nextcloud:/usr/src/nextcloud
       - kolibri:/usr/src/kolibri
-      - map:/usr/src/map
+      # - map:/usr/src/map
+

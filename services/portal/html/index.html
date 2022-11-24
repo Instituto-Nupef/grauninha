@@ -1,249 +1,125 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
 
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Graúna Comunitário</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>Graúna Comunitário</title>
 
-  <style>
-    html,
-    body {
-      margin: 0;
-    }
-
-    h1 {
-      color: #000000;
-      font-family: verdana, sans-serif;
-      font-size: 1.2em;
-      padding: 20px;
-      text-align: center;
-    }
-
-    hr {
-      width: 80%;
-      margin: 0 auto;
-    }
-
-    h2 {
-      color: #000000;
-      font-family: verdana, sans-serif;
-      font-size: 0.9em;
-      max-width: 940px;
-      margin: 0 auto;
-      padding: 20px;
-      line-height: 1.5;
-      text-align: center;
-    }
-
-    p {
-      color: #000000;
-      font-family: verdana, sans-serif;
-      font-size: 80%;
-      padding-left: 20px;
-      padding-right: 20px;
-      text-align: center;
-      line-height: 1.5;
-    }
-
-    img {
-      max-width: 100%;
-      max-height: 240px;
-      height: auto;
-    }
-  </style>
-
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    #footer {
-      position: fixed;
-      text-align: center;
-      height: 80px: left: 0;
-      bottom: 0;
-      width: 100%;
-      color: #000000;
-      background-color: #009999;
-      padding: 2.0em 20px;
-      font-family: Verdana, sans-serif;
-      font-size: 14px;
-      line-height: 1.5;
-    }
-
-    a:link {
-      color: #ffffff;
-      text-decoration: none;
-    }
-
-    a:visited {
-      color: #ffffff;
-      text-decoration: none;
-    }
-
-    a:hover {
-      color: #000000;
-      text-decoration: none;
-    }
-
-    a:active {
-      color: #000000;
-      text-decoration: none;
-    }
-
-    .items {
-      display: flex;
-      flex-flow: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .items>* {
-      width: 300px;
-      padding: 35px 5px;
-    }
+	<link rel="stylesheet" href="./css/bootstrap.min.css"
+		integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<script src="./js/bootstrap.min.js"
+		integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+		crossorigin="anonymous"></script>
 
 
-    /* Essa Query adiciona um break point no layout da página */
-    /* A largura dos elementos cobre 100% do viewport quando ele cai pra 800px ou menos */
-    @media screen and (min-width: 768px) {
-      h1 {
-        font-size: 3em;
-      }
-
-      .items {
-        /* max-width: 940px; */
-        margin: 0 auto;
-        flex-flow: row;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .items>* {
-        width: 450px;
-        padding: 35px;
-      }
-    }
-
-    @media screen and (max-width: 800px) {
-
-      .left,
-      .main,
-      .main2,
-      .right {
-        width: 100%;
-      }
-    }
-  </style>
 </head>
 
 <body>
-  <h1>Sejam bem-vindos ao Graúna Comunitário</h1>
-  <hr />
-  <h2>
-    Este projeto, realizado pelo Instituto Nupef, é voltado para a memória e a
-    difusão de conteúdos de interesse público. Nele, você encontrará
-    enciclopédia e dicionário no Kiwix, materiais educacionais no Kolibri e
-    conteúdos relevantes nos campos de direitos humanos, meio ambiente,
-    cultura e saúde no Nextcloud, que também poderá armazenar conteúdos
-    produzidos pela própria comunidade. Esperamos que gostem!
-  </h2>
-  <main class="items">
-    <div>
-      <a target="blank" href="http://awa.com:8082"><img src="img/jellyfin.png" alt="Jellyfin" /></a>
-    </div>
-    <div>
-      <a target="blank" href="http://awa.com:8084"><img src="img/kolibri-h.png" alt="Kolibri" /></a>
-    </div>
-    <div>
-      <a target="blank" href="http://awa.com:8085"><img src="img/kiwix.png" alt="Kiwix" /></a>
-    </div>
-    <!-- <div>
-        <a target="blank" href="http://awa.com:8091"
-          ><img style="height: 170px;" src="img/calibre.png" alt="Calibre"
-        /></a>
-      </div>
-      <div>
-        <a target="blank" href="http://awa.com:8087"
-          ><img src="img/nextcloud.png" alt="Nuvem Social"
-        /></a>
-      </div> -->
-    <div>
-      <a target="blank" href="http://awa.com:8086"><img src="img/metube.png" alt="MeTube" /></a>
-    </div>
-    <div>
-      <a target="blank" href="http://awa.com:8083"><img src="img/filebrowser.png" alt="Filebrowser" /></a>
-    </div>
-    <div>
-      <a target="blank" href="http://awa.com:8090"><img src="img/map.jpg" alt="Mapa" /></a>
-    </div>
-    <!-- <div>
-        <a target="blank" href="http://awa.com:8090"
-          ><img src="img/vscode.png" alt="VSCode"
-        /></a>
-      </div>
-      <div>
-        <a target="blank" href="http://awa.com:8081"
-          ><img src="img/npm.png" alt="Proxy Manager"
-        /></a>
-      </div>
-      <div>
-        <a target="blank" href="http://awa.com:8089"
-          ><img src="img/pihole.png" alt="Pihole"
-        /></a>
-      </div>
-      <div>
-        <a target="blank" href="http://awa.com:8092"
-          ><img src="img/resilio_sync.png" alt="Resilio Sync"
-        /></a>
-      </div> -->
-    <!-- <div>
-        <img
-          src="img/grauna-memoria.png"
-          alt="Graúna Memória"
-          >
-      </div> -->
-  </main>
 
-  <p>&nbsp;</p>
-  <p>&nbsp;</p>
-  <p>
-    Este projeto tem o apoio da Embaixada Britânica/Foreign, Commonwealth &
-    Development Office (FCDO) e da Fundação Ford.
-  </p>
-  <p>
-    <img src="img/G_Partnership_Brazil.png" alt="Great for Partnership Brazil" />
-    <img src="img/FordFoundation.png" alt="Ford Foundation" />
-  </p>
-  <br /><br /><br /><br /><br /><br /><br />
+	<main>
+		<div class="container py-4">
+			<header class="pb-3 mb-4 border-bottom">
+				<a href="#" class="d-flex align-items-center text-dark text-decoration-none ">
+					<img src="./img/grauna_passaro.png" alt="Grauna Comunitario" style="width: 7em;">
+				</a>
+			</header>
 
-  <div id="footer">
-    contato.
-    <a target="blank" href="mailto:suportecomunitario@nupef.org.br">suportecomunitario@nupef.org.br</a><br />
-    web site.
-    <a target="blank" href="https://nupef.org.br" target="_blank">https://nupef.org.br</a>
-  </div>
+			<div class="p-1 mb-4 bg-light rounded-3 py-5 px-1">
+				<div class="container-fluid">
+					<h1 class="col-sm-8 display-4 font-weight-bold p-1" style="font-size: 2rem;">Olá, este é o portal Grauna Comunitário</h1>
+					<p class="col-sm-12 pt-3">Aqui você pode navegar pela biblioteca digital comunitária
+						(Kiwix), pelo
+						acervo de videos e treinamentos (Kolibri) e pelo armazenamento de fotos, documentos e conteúdos
+						produzidos pela própria comunidade (Nextcloud).</p>
+					<p class="col-sm-12">Esperamos que gostem!</p>
+				</div>
+
+				<div class="card-deck p-4">
+					<div class="card border-info">
+						<div class="card-header">
+							<a href="http://grauna:8084" target="_blank"><img src="./img/kolibri-h.png"
+									class="mx-auto d-block img-fluid" alt="Kolibri">
+							</a>
+						</div>
+						<div class="card-body text-dark">
+							<h5 class="card-title font-weight-bold">Videos</h5>
+							<p class="card-text" style="font-size: .9rem;">Assista materiais educacionais, o treinamento
+								de redes
+								e conteúdos
+								relevantes nos campos meio ambiente, cultura e saúde no
+								Kolibri.</p>
+							<a href="http://grauna:8084" class="btn btn-info btn-sm" target="_blank">Acessar</a>
+						</div>
+					</div>
+					<div class="card border-info">
+						<div class="card-header">
+							<a href="http://grauna:8087" target="_blank"><img src="./img/nextcloud.png"
+									class="mx-auto d-block img-fluid" alt="nextcloud">
+							</a>
+						</div>
+						<div class="card-body text-dark">
+							<h5 class="card-title font-weight-bold">Arquivos Comunitários</h5>
+							<p class="card-text" style="font-size: .9rem;">Guarde e compartilhe seus arquivos através do
+								Nextcloud. Aqui você encontra os conteúdos criados e compartilhados pela e
+								para a
+								comunidade.</p>
+							<a href="http://grauna:8087" class="btn btn-info btn-sm" target="_blank">Acessar</a>
+						</div>
+					</div>
+
+					<div class="card border-info">
+						<div class="card-header">
+							<a href="http://grauna:8085" target="_blank"><img src="./img/kiwix.png"
+									class="mx-auto d-block img-fluid" alt="kiwix">
+							</a>
+						</div>
+						<div class="card-body text-dark">
+							<h5 class="card-title font-weight-bold">Biblioteca Digital</h5>
+							<p class="card-text" style="font-size: .9rem;">Visite a Biblioteca Digital Comunitária e
+								navegue por
+								livros, artigos, cursos e referências, assim como por
+								enciclopédias e pelo dicionário no Kiwix.</p>
+							<a href="http://grauna:8085" class="btn btn-info btn-sm" target="_blank">Acessar</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="p-1 mb-4 rounded-3">
+				<div class="container-fluid py-3">
+					<p class="col-md-12">Este projeto, realizado pelo Instituto Nupef, é voltado para
+						a memória e a
+						difusão de conteúdos de interesse
+						público. Apoiam esta iniciativa a Embaixada Britânica/Foreign, o Commonwealth & Development
+						Office (FCDO) e a Fundação
+						Ford.</p>
+				</div>
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-sm-6">
+							<img src="img/G_Partnership_Brazil.png" class="mx-auto d-block img-fluid"
+								alt="Great for Partnership Brazil">
+						</div>
+						<div class="col-sm-6">
+							<img src="img/FordFoundation.png" class="mx-auto d-block img-fluid" alt="Ford Foundation">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+
+	<footer class="footer bg-info mt-auto px-1 py-3">
+		<div class="container">
+			<p class="text-center" style="font-size: .8rem;">contato. <a 
+					href="mailto:suportecomunitario@nupef.org.br" class="text-white">suportecomunitario@nupef.org.br</a></p>
+			<p class="text-center" style="font-size: .8rem;">web site. <a href="https://nupef.org.br"
+					class="text-white" target="_blank">https://nupef.org.br</a>.</p>
+		</div>
+	</footer>
+
+
 </body>
 
 </html>
-<script>
-  window.onload = function () {
-    console.log('Começando Grauninha')
-    const hostname = window.location.hostname
-    console.log('hostname', hostname)
-    if (hostname === 'localhost') {
-      var anchors = document.getElementsByTagName("a");
-
-      for (var i = 0; i < anchors.length; i++) {
-        const port = anchors[i].href.split(":")[2]
-        anchors[i].href = "http://localhost:" + port
-      }
-    }
-
-  }
-
-
-
-</script>
