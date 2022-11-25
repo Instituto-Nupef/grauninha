@@ -46,9 +46,9 @@ services:
       - 8083:80
     volumes:
       - media:/srv
-      - 'pulse:/run/pulse'
-      - filebrowser-db:/database
-      - filebrowser-config:/config
+      - 'filebrowser-db:/database'
+      - 'filebrowser-config:/config'
+
     environment:
       PGID: 1000
       PUID: 1000
@@ -131,7 +131,7 @@ services:
   # https://github.com/balenablocks/hostname
   hostname:
     image: balenablocks/hostname
-    restart: no
+    restart: 'no'
     labels:
       io.balena.features.supervisor-api: 1
     environment:
