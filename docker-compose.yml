@@ -5,8 +5,8 @@ volumes:
   jellyfin-cache:
   jellyfin-lib:
   media:
-  filebrowser-db:
-  filebrowser-config:
+  filebrowser-database:
+  filebrowser-configuration:
   portal:
   kolibri:
   kiwix:
@@ -46,8 +46,8 @@ services:
       - 8083:80
     volumes:
       - media:/srv
-      - 'filebrowser-db:/database'
-      - 'filebrowser-config:/config'
+      - 'filebrowser-database:/database'
+      - 'filebrowser-configuration:/config'
 
     environment:
       PGID: 1000
