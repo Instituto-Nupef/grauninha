@@ -1,7 +1,7 @@
-name: "Grauninha"
+name: "Grauninha Cinema"
 type: "sw.application"
 description: "Servidor comunitário grauninha, parte do projeto Grauna que também conta com o coletor de sites Grauna Memória"
-version: 0.0.3
+version: 1.0.0
 post-provisioning: >-
   ## Usage instructions
 
@@ -9,23 +9,12 @@ post-provisioning: >-
 
   When it's done you should be able to access the access the dashboard at <http://grauna.local>.
   Services run in following ports:
-  - Nginx Proxy Manager: <http://grauna.local:81>
   - Jellyfin: <http://grauna.local:82>
   - Filebrowser: <http://grauna.local:83>
   - Kolibri: <http://grauna.local:84>
   - Kiwix: <http://grauna.local:85>
-  - Nextcloud: <http://grauna.local:86>
   - MeTube: <http://grauna.local:87>
   - Portal: <http://grauna.local:88>
-  - PiHole: <http://grauna.local:89>
-  - Visual Code Studio: <http://grauna.local:90>
-  - Calibre: <http://grauna.local:91>
-  - Resilio-Sync: <http://grauna.local:8888>
-  - WiFi Connect: <http://grauna.local:8080>
-
-
-  Create mappings using Nginx Proxy Manager to have custom domains. Ex.: jellyfin.grauna.local
-
 assets:
   repository:
     type: "blob.asset"

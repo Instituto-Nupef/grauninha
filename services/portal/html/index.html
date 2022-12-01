@@ -213,7 +213,7 @@
             <!-- Mapeo Libremesh -->
             <div class="card border-info">
               <div class="card-header">
-                <a href="http://grauna:3000" target="_blank">
+                <a href="http://grauna.local:3000" target="_blank">
                   <img
                     src="./img/libremeshmapeo.png"
                     class="mx-auto d-block img-fluid"
@@ -293,3 +293,19 @@
     height: 90px;
   }
 </style>
+<script>
+  window.onload = function () {
+    console.log('Começando Grauninha')
+    const hostname = window.location.hostname
+    console.log('hostname', hostname)
+    if (hostname === 'localhost') {
+      var anchors = document.getElementsByTagName("a");
+
+      for (var i = 0; i < anchors.length; i++) {
+        const port = anchors[i].href.split(":")[2]
+        anchors[i].href = "http://localhost:" + port
+      }
+    }
+
+  }
+</script>
