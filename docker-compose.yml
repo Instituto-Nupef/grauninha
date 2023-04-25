@@ -18,6 +18,8 @@ volumes:
   # nextcloud_mysql:
   kolibri:
   kiwix:
+  influxdb:
+  grafana:
   #browser-settings:
   # pulse:
   # map:
@@ -126,7 +128,8 @@ services:
    #   - 'pulse:/run/pulse'
   ## https://hub.docker.com/r/kiwix/kiwix-serve
   kiwix:
-    build: services/kiwix
+  #  build: services/kiwix
+    image: offlineinternet/kiwix 
     restart: unless-stopped
     ports:
       - "8085:80"
@@ -156,6 +159,36 @@ services:
    #   - nextcloud:/var/www/html/data 
    #     NEXTCLOUD_TRUSTED_DOMAINS: "grauna.local *.balena-devices.com"
     restart: unless-stopped   
+
+  collectd:
+    image: intel/observability-collectd
+    privileged: true
+    ports:
+      - '8086:8086'
+      - '25826:25826/udp'
+
+    restart: unless-stopped   
+
+  influxdb:
+    image: influxdb
+    privileged: true
+    ports:
+      - '8090:80'
+    volumes:
+      - influxdb:/var/lib/influxdb
+      - influxdb:/etc/influxdb/
+      ## - ./configs/influxdb/types.db:/usr/share/collectd/types.db:ro
+    restart: unless-stopped   
+    
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana:/var/lib/grafana/
+      - grafana:/etc/grafana/provisioning/            
+    restart: unless-stopped
+
   
   
   # # https://hub.docker.com/r/alexta69/metube
