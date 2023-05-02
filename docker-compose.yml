@@ -22,6 +22,8 @@ volumes:
   # pulse:
   # map:
   mapeo-libremesh:
+  influxdb-data:
+  influxdb-config:
 services:
   mapeo-libremesh:
     image: communityfirst/mapeo-bridge:libremesh
@@ -123,6 +125,7 @@ services:
   #    - "5053:5053/tcp"
   #    - "5053:5053/udp"
   ## Custom
+
   kolibri:
     build: services/kolibri
     ports:
@@ -348,4 +351,16 @@ services:
       - nextcloud:/usr/src/nextcloud
       - kolibri:/usr/src/kolibri
       # - map:/usr/src/map
+  influxdb:
+    build: services/influxdb
+    privileged: true
+    ports:
+      - '8086:8086'
+      - '25826:25826/udp'
+    volumes:
+       - influxdb-config:/etc/influxdb/
+       - influxdb-data:/var/lib/influxdb
+    restart: unless-stopped   
+    
+
 

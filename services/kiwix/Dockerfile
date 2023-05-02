@@ -1,2 +1,3 @@
-# https://hub.docker.com/r/kiwix/kiwix-serve
-FROM kiwix/kiwix-serve
+# https://hub.docker.com/r/kiwix/kiwix-serve not working
+# changed to offlineinternet project
+FROM offlineinternet/kiwix
