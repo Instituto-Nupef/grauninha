@@ -14,6 +14,10 @@ volumes:
   pulse:
   map:
   mapeo-libremesh:
+  influxdb-data:
+  influxdb-config:
+  grafana-data:
+  grafana-config:
 services:
   # https://hub.docker.com/r/communityfirst/mapeo-bridge
   mapeo-libremesh:
@@ -148,3 +152,25 @@ services:
       - kolibri:/usr/src/kolibri
       - map:/usr/src/map
       - mapeo-libremesh:/usr/src/mapeo-libremesh
+  influxdb:
+    build: services/influxdb
+    privileged: true
+    ports:
+      - '8086:8086'
+      - '25826:25826/udp'
+    volumes:
+       - influxdb-config:/etc/influxdb/
+       - influxdb-data:/var/lib/influxdb
+    restart: unless-stopped   
+  grafana:
+    build: services/grafana
+    ports:
+      - "3001:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana/
+      - grafana-config:/etc/grafana/
+    restart: unless-stopped
+
+    
+
+
