@@ -1,0 +1,12 @@
+apiVersion: 1
+
+datasources:
+  - name: InfluxDB
+    type: influxdb
+    access: server
+    database: collectd
+    user: root
+    password:
+    url: http://10.13.97.117:8086
+    jsonData:
+      httpMode: GET
