@@ -1,4 +1,6 @@
 # Grauninha
+ADAPTAR PARA VERSAO BASEADA NA @@ _ PROJETO SOCIAL BOND
+
 
 [![Balena Release](https://github.com/Instituto-Nupef/grauninha/actions/workflows/balena-tag-release.yml/badge.svg)](https://github.com/Instituto-Nupef/grauninha/actions/workflows/balena-tag-release.yml)
 

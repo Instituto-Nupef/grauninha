@@ -1,45 +1,39 @@
 version: "2.1"
 
 volumes:
-  #  pihole_config:
-  # dnsmasq_config:
-  # proxy:
-  # certs:
-  # jellyfin-config:
-  # jellyfin-cache:
-  # media:
-  # jellyfin-lib:
-  # calibre:
-  # calibre-config:
+ 
   portal:
   nextcloud:
-  portal-config:
-  # proxy_mysql:
-  # nextcloud_mysql:
   kolibri:
   kiwix:
-  #browser-settings:
-  # pulse:
-  # map:
   mapeo-libremesh:
   influxdb-data:
   influxdb-config:
   grafana-data:
   grafana-config:
 services:
-  mapeo-libremesh:
-    image: communityfirst/mapeo-bridge:libremesh
-    network_mode: host
+  portal:
+    build: services/portal
+    restart: unless-stopped
+    ports:
+      - 80:8080
+    # volumes:
+  nextcloud:
+    image: nextcloud
+    privileged: true
+    ports:
+      - '8087:80'
     volumes:
-      - mapeo-libremesh:/root/.mapeo-bridge
- 
+       - nextcloud:/var/www/html
+   #   - nextcloud:/var/www/html/data 
+   #     NEXTCLOUD_TRUSTED_DOMAINS: "grauna.local *.balena-devices.com"
+    restart: unless-stopped   
   kolibri:
     build: services/kolibri
     ports:
       - "8084:8080"
     volumes:
       - kolibri:/root/.kolibri
-
   kiwix:
     build: services/kiwix
     restart: unless-stopped
@@ -57,23 +51,13 @@ services:
     #   DOWNLOAD: "https://download.kiwix.org/zim/wikisource/wikisource_pt_all_maxi_2022-01.zim"
     #   DOWNLOAD: "https://download.kiwix.org/zim/wiktionary/wiktionary_pt_all_maxi_2022-01.zim"
     #   DOWNLOAD: "https://download.kiwix.org/zim/wikinews/wikinews_pt_all_maxi_2022-01.zim"
-
    #   DOWNLOAD: "https://download.kiwix.org/zim/wikiversity/wikiversity_pt_all_maxi_2022-01.zim"
   # https://hub.docker.com/_/nextcloud/
-
-  nextcloud:
-    image: nextcloud
-    privileged: true
-    ports:
-      - '8087:80'
+  mapeo-libremesh:
+    image: communityfirst/mapeo-bridge:libremesh
+    network_mode: host
     volumes:
-       - nextcloud:/var/www/html
-   #   - nextcloud:/var/www/html/data 
-   #     NEXTCLOUD_TRUSTED_DOMAINS: "grauna.local *.balena-devices.com"
-    restart: unless-stopped   
-  
-  
- 
+      - mapeo-libremesh:/root/.mapeo-bridge
   hostname:
     image: balenablocks/hostname
     restart: no
@@ -86,10 +70,7 @@ services:
     build: services/storage
     privileged: true
     volumes:
-      #- media:/usr/src/media
-      #- jellyfin-config:/usr/src/jellyfin-config
       - kiwix:/usr/src/kiwix
-      # - calibre:/usr/src/calibre
       - portal:/usr/src/portal
       - nextcloud:/usr/src/nextcloud
       - kolibri:/usr/src/kolibri

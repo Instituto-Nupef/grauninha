@@ -1,0 +1,18 @@
+grafana provisioning errors
+
+]    [2023-5
+-2 9:52:17] [grafana] ERROR[05-02|12:52:17] Cannot read directory                    logger=provisioning.dashboard type=file name="unique test provider name" error="stat /var/lib/grafana/dashboards: no such file or directory"
+[Logs]    [2023-5-2 9:52:17] [grafana] ERROR[05-02|12:52:17] Failed to read content of symlinked path logger=provisioning.dashboard type=file name="unique test provider name" path=/var/lib/grafana/dashboards error="lstat /var/lib/grafana/dashboards: no such file or directory"
+[Logs]    [2023-5-2 9:52:17] [grafana] INFO [05-02|12:52:17] falling back to original path due to EvalSymlink/Abs failure logger=provisioning.dashboard type=file name="unique test provider name"
+[Logs]    [2023-5-2 9:52:17] [grafana] WARN [05-02|12:52:17] Failed to provision config               logger=provisioning.dashboard name="unique test provider name" error="stat /var/lib/grafana/dashboards: no such file or directory"
+
+
+
+[Logs]    [2023-5-2 10:00:06] [portal] Serving "/var/www" at http://127.0.0.1:8080
+[Logs]    [2023-5-2 10:00:06] [portal] Ready for changes
+[Debug]   Device state not settled, retrying in 1000ms
+[Logs]    [2023-5-2 10:00:06] [grafana] ERROR[05-02|13:00:06] Cannot read directory                    logger=provisioning.dashboard type=file name="unique test provider name" error="stat /var/lib/grafana/dashboards: no such file or directory"
+[Logs]    [2023-5-2 10:00:06] [grafana] ERROR[05-02|13:00:06] Failed to read content of symlinked path logger=provisioning.dashboard type=file name="unique test provider name" path=/var/lib/grafana/dashboards error="lstat /var/lib/grafana/dashboards: no such file or directory"
+[Logs]    [2023-5-2 10:00:06] [grafana] INFO [05-02|13:00:06] falling back to original path due to EvalSymlink/Abs failure logger=provisioning.dashboard type=file name="unique test provider name"
+[Logs]    [2023-5-2 10:00:06] [grafana] ERROR[05-02|13:00:06] failed to search for dashboards          logger=provisioning.dashboard type=file name="unique test provider name" error="stat /var/lib/grafana/dashboards: no such file or directory"
+[Live]    Device state settled
