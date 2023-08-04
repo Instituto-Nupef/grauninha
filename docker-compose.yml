@@ -72,7 +72,7 @@ services:
     volumes:
       - kiwix:/data
       - 'pulse:/run/pulse'
-    command: "*.zim"
+    command: "/data/wikibooks_pt_all_maxi_2021-03.zim /data/wikipedia_pt_all_maxi_2023-05.zim /data/wikihow_pt_maxi_2023-01.zim /data/wikisource_pt_all_maxi_2023-05.zim /data/wikisource_pt_all_maxi_2023-05.zim /data/wikiversity_pt_all_maxi_2023-07.zim /data/wikivoyage_pt_all_maxi_2023-07.zim /data/wiktionary_pt_all_maxi_2023-06.zim"
   # https://hub.docker.com/r/alexta69/metube
   metube:
     image: alexta69/metube
