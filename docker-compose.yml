@@ -14,6 +14,10 @@ volumes:
   pulse:
   map:
   mapeo-libremesh:
+  influxdb-data:
+  influxdb-config:
+  grafana-data:
+  grafana-config:
 services:
   # https://hub.docker.com/r/communityfirst/mapeo-bridge
   mapeo-libremesh:
@@ -68,7 +72,7 @@ services:
     volumes:
       - kiwix:/data
       - 'pulse:/run/pulse'
-    command: "*.zim"
+    command: "/data/wikibooks_pt_all_maxi_2021-03.zim /data/wikipedia_pt_all_maxi_2023-05.zim /data/wikihow_pt_maxi_2023-01.zim /data/wikisource_pt_all_maxi_2023-05.zim /data/wikisource_pt_all_maxi_2023-05.zim /data/wikiversity_pt_all_maxi_2023-07.zim /data/wikivoyage_pt_all_maxi_2023-07.zim /data/wiktionary_pt_all_maxi_2023-06.zim"
   # https://hub.docker.com/r/alexta69/metube
   metube:
     image: alexta69/metube
@@ -148,3 +152,25 @@ services:
       - kolibri:/usr/src/kolibri
       - map:/usr/src/map
       - mapeo-libremesh:/usr/src/mapeo-libremesh
+  influxdb:
+    build: services/influxdb
+    privileged: true
+    ports:
+      - '8086:8086'
+      - '25826:25826/udp'
+    volumes:
+       - influxdb-config:/etc/influxdb/
+       - influxdb-data:/var/lib/influxdb
+    restart: unless-stopped   
+  grafana:
+    build: services/grafana
+    ports:
+      - "3001:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana/
+      - grafana-config:/etc/grafana/
+    restart: unless-stopped
+
+    
+
+
