@@ -80,7 +80,6 @@ services:
     environment:
       PGID: 1000
       PUID: 1000
-    command: -- c
   # resilio-sync:
   #   image: lscr.io/linuxserver/resilio-sync
   #   environment:
