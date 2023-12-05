@@ -48,39 +48,39 @@ services:
   #     - certs:/etc/letsencrypt
   #   depends_on:
   #     - proxy_db
-  #  jellyfin:
-  #  image: jellyfin/jellyfin
-  #  restart: unless-stopped
-  #  ports:
-  #    - 8082:8096
-  #    - 8920:8920 #optional
-  #    - 7359:7359/udp #optional
-  #    - 1900:1900/udp #optional
- # volumes:
- #    - jellyfin-config:/config
- #    - jellyfin-cache:/cache
- #     - media:/media
- #   - jellyfin-lib:/opt/vc/lib
- #     - 'pulse:/run/pulse'
- #   environment:
- #     PUID: 1000
- #     PGID: 1000
- #     JELLYFIN_PublishedServerUrl: guarani.io
-    #devices:
-    #- /dev/vchiq:/dev/vchiq #hardware acceleration for Rasp 3 e 4
+  jellyfin:
+    image: jellyfin/jellyfin
+    restart: unless-stopped
+    ports:
+      - 8082:8096
+      - 8920:8920 #optional
+      - 7359:7359/udp #optional
+      - 1900:1900/udp #optional
+    volumes:
+        - jellyfin-config:/config
+        - jellyfin-cache:/cache
+        - media:/media
+        - jellyfin-lib:/opt/vc/lib
+        - 'pulse:/run/pulse'
+    environment:
+      PUID: 1000
+      PGID: 1000
+      JELLYFIN_PublishedServerUrl: guarani.io
+    # devices:
+    # - /dev/vchiq:/dev/vchiq #hardware acceleration for Rasp 3 e 4
     # - /dev/vcsm:/dev/vcsm #hardware acceleration for Rasp 3
   # https://hub.docker.com/r/filebrowser/filebrowser
-  #  filebrowser:
-  #  image: filebrowser/filebrowser
-  #  ports:
-  #    - 8083:80
-  #  volumes:
-  #    - media:/srv
-  #    - 'pulse:/run/pulse'
-  #  environment:
-  #    PGID: 1000
-  #    PUID: 1000
-#    command: -- c
+  filebrowser:
+    image: filebrowser/filebrowser:s6
+    ports:
+      - 8083:80
+    volumes:
+      - media:/srv
+      - 'pulse:/run/pulse'
+    environment:
+      PGID: 1000
+      PUID: 1000
+    command: -- c
   # resilio-sync:
   #   image: lscr.io/linuxserver/resilio-sync
   #   environment:
