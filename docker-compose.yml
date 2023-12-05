@@ -5,10 +5,10 @@ volumes:
   # dnsmasq_config:
   # proxy:
   # certs:
-  # jellyfin-config:
-  # jellyfin-cache:
-  # media:
-  # jellyfin-lib:
+  jellyfin-config:
+  jellyfin-cache:
+  media:
+  jellyfin-lib:
   # calibre:
   # calibre-config:
   portal:
@@ -20,8 +20,8 @@ volumes:
   kiwix:
   influxdb:
   grafana:
-  #browser-settings:
-  # pulse:
+  browser-settings:
+  pulse:
   # map:
 services:
   # https://github.com/balenablocks/wifi-connect
@@ -303,36 +303,36 @@ services:
   #   image: redis:6.0.8-alpine
   #   command: redis-server --requirepass nextcloud
   # https://github.com/balenablocks/browser
-  # browser:
-  #   image: balenablocks/browser
-  #   privileged: true # required for UDEV to find plugged in peripherals such as a USB mouse
-  #   network_mode: host
-  #   ports:
-  #       - '5011' # management API (optional)
-  #       - '35173' # Chromium debugging port (optional)
-  #   volumes:
-  #     - 'browser-settings:/data' # Only required if using PERSISTENT flag (see below)
-  #     - 'pulse:/run/pulse'
-  #   environment:
-  #     PULSE_SERVER: unix:/run/pulse/pulseaudio.socket
-  #     LAUNCH_URL: http://localhost
-  #     PERSISTENT: 1
-  #     SHOW_CURSOR: 1
-  #     DISPLAY_NUM: 1
-  #     KIOSK: 0
+  browser:
+    image: balenablocks/browser
+    privileged: true # required for UDEV to find plugged in peripherals such as a USB mouse
+    network_mode: host
+    ports:
+        - '5011' # management API (optional)
+        - '35173' # Chromium debugging port (optional)
+    volumes:
+      - 'browser-settings:/data' # Only required if using PERSISTENT flag (see below)
+      - 'pulse:/run/pulse'
+    environment:
+      PULSE_SERVER: unix:/run/pulse/pulseaudio.socket
+      LAUNCH_URL: http://localhost
+      PERSISTENT: 1
+      SHOW_CURSOR: 1
+      DISPLAY_NUM: 1
+      KIOSK: 0
   # # https://github.com/balenablocks/audio
-  # audio:
-  #   image: balenablocks/audio
-  #   privileged: true
-  #   labels:
-  #     io.balena.features.dbus: 1  # Only required for bluetooth support
-  #   ports:
-  #     - 4317:4317                 # Only required if using PA over TCP socket
-  #   volumes:
-  #     - 'pulse:/run/pulse'
-  #   environment:
-  #     AUDIO_OUTPUT: AUTO
-  #     AUDIO_VOLUME: 100%
+  audio:
+    image: balenablocks/audio
+    privileged: true
+    labels:
+      io.balena.features.dbus: 1  # Only required for bluetooth support
+    ports:
+      - 4317:4317                 # Only required if using PA over TCP socket
+    volumes:
+      - 'pulse:/run/pulse'
+    environment:
+      AUDIO_OUTPUT: AUTO
+      AUDIO_VOLUME: 100%
   # # https://github.com/synapzlu/balena-zerotier
   # zerotier:
   #   # This volume is needed to make ZT configuration survive a reboot and new container version
