@@ -366,7 +366,7 @@ services:
     build: services/storage
     privileged: true
     volumes:
-      #- media:/usr/src/media
+      - media:/usr/src/media
       #- jellyfin-config:/usr/src/jellyfin-config
       - kiwix:/usr/src/kiwix
       # - calibre:/usr/src/calibre
